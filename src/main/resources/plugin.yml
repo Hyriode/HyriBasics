@@ -1,0 +1,5 @@
+name: HyriBasics
+main: fr.hyriode.basics.HyriBasics
+version: @version@
+depend: [Hyrame]
+authors: [AstFaster]

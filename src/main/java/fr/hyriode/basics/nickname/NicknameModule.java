@@ -1,0 +1,134 @@
+package fr.hyriode.basics.nickname;
+
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import fr.hyriode.api.HyriAPI;
+import fr.hyriode.api.player.IHyriPlayer;
+import fr.hyriode.api.player.IHyriPlayerSession;
+import fr.hyriode.api.player.nickname.IHyriNickname;
+import fr.hyriode.api.rank.type.HyriPlayerRankType;
+import fr.hyriode.api.util.Skin;
+import fr.hyriode.basics.HyriBasics;
+import fr.hyriode.basics.language.BasicsMessage;
+import fr.hyriode.hyrame.utils.PlayerUtil;
+import fr.hyriode.hyrame.utils.ThreadUtil;
+import fr.hyriode.hyrame.utils.UUIDFetcher;
+import fr.hyriode.hyrame.utils.player.ProfileLoader;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Iterator;
+import java.util.UUID;
+
+/**
+ * Created by AstFaster
+ * on 21/04/2022 at 21:16
+ */
+public class NicknameModule {
+
+    private final NicknameLoader loader;
+
+    public NicknameModule() {
+        this.loader = new NicknameLoader();
+        this.loader.load();
+
+        HyriBasics.get().getServer().getPluginManager().registerEvents(new NicknameHandler(this), HyriBasics.get());
+    }
+
+    public void processNickname(Player player, String nick, String skinOwner, Skin skin, HyriPlayerRankType rankType, boolean mojangCheck) {
+        if (!this.isNicknameAvailable(nick, mojangCheck) && !HyriAPI.get().getPlayerManager().getNicknameManager().getPlayerUsingNickname(nick).equals(player.getUniqueId())) {
+            player.sendMessage(BasicsMessage.NICKNAME_PLAYER_EXISTS_MESSAGE.asString(player));
+            return;
+        }
+
+        final UUID playerId = player.getUniqueId();
+        final IHyriPlayerSession session = IHyriPlayerSession.get(playerId);
+
+        final IHyriNickname oldNickname = session.getNickname();
+
+        if (oldNickname != null) {
+            HyriAPI.get().getPlayerManager().getNicknameManager().removeUsedNickname(oldNickname.getName());
+        }
+
+        final IHyriNickname nickname = session.createNickname(nick, skinOwner, skin);
+
+        this.applyNickname(player, nickname.getName(), skin);
+
+        nickname.setRank(rankType);
+        nickname.update(playerId);
+        session.update();
+
+        HyriAPI.get().getPlayerManager().getNicknameManager().addUsedNickname(nick, playerId);
+
+        player.sendMessage(BasicsMessage.NICKNAME_ADD_NICK_MESSAGE.asString(player).replace("%nickname%", nick));
+    }
+
+    public void processNickname(Player player) {
+        this.processNickname(player, this.loader.getRandomNickname(), null, this.loader.getRandomSkin(), HyriPlayerRankType.PLAYER, false);
+    }
+
+    public void applyNickname(Player player, String nickname, String textureData, String textureSignature) {
+        final GameProfile profile = PlayerUtil.setName(player, nickname);
+
+        if (textureData != null && textureSignature != null) {
+            profile.getProperties().clear();
+            profile.getProperties().put("textures", new Property("textures", textureData, textureSignature));
+        }
+
+        ThreadUtil.backOnMainThread(HyriBasics.get(), () -> {
+            PlayerUtil.reloadSkin(HyriBasics.get(), player);
+
+            for (Player target : Bukkit.getOnlinePlayers()) {
+                target.hidePlayer(player);
+                target.showPlayer(player);
+            }
+        });
+    }
+
+    public void applyNickname(Player player, String nickname, @NotNull Skin skin) {
+        this.applyNickname(player, nickname, skin.getTextureData(), skin.getTextureSignature());
+    }
+
+    public void applyNickname(Player player, String nickname) {
+        final GameProfile profile = new ProfileLoader(nickname, ProfileLoader.REDIS_KEY).loadProfile();
+        final Property textures = profile.getProperties().get("textures").iterator().next();
+
+        this.applyNickname(player, nickname, textures.getValue(), textures.getSignature());
+    }
+
+    public void resetNickname(Player player) {
+        final IHyriPlayerSession session = IHyriPlayerSession.get(player.getUniqueId());
+
+        session.setNickname(null);
+        session.update();
+
+        this.applyNickname(player, IHyriPlayer.get(player.getUniqueId()).getName()); // Set player nickname to its original name
+
+        HyriAPI.get().getPlayerManager().getNicknameManager().removeUsedNickname(player.getName());
+    }
+
+    public boolean isNicknameAvailable(String nickname, boolean mojangCheck) {
+        return HyriAPI.get().getPlayerManager().getNicknameManager().isNicknameAvailable(nickname) // Check if nickname is used
+                && HyriAPI.get().getPlayerManager().getPlayer(nickname) == null // Check if a player exists on Hyriode with the given name
+                && (!mojangCheck || new UUIDFetcher().getUUID(nickname, true) == null); // Check Mojang
+    }
+
+    public Skin getPlayerSkin(String player) {
+        final GameProfile skinProfile = new ProfileLoader(player, ProfileLoader.REDIS_KEY).loadProfile();
+        final Iterator<Property> properties = skinProfile.getProperties().get("textures").iterator();
+
+        if (!properties.hasNext()) {
+            return null;
+        }
+
+        final Property textures = properties.next();
+
+        return new Skin(textures.getValue(), textures.getSignature());
+    }
+
+    public NicknameLoader getLoader() {
+        return this.loader;
+    }
+
+}
