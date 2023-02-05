@@ -3,6 +3,7 @@ package fr.hyriode.basics;
 import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.chat.channel.HyriChatChannel;
 import fr.hyriode.api.chat.channel.IHyriChatChannelHandler;
+import fr.hyriode.basics.afk.AFKModule;
 import fr.hyriode.basics.annoucement.AnnouncementListener;
 import fr.hyriode.basics.booster.BoosterModule;
 import fr.hyriode.basics.chat.DefaultChatHandler;
@@ -30,8 +31,9 @@ import java.util.logging.Level;
  * Created by AstFaster
  * on 07/12/2022 at 14:52
  */
-public class HyriBasics extends JavaPlugin {
+public class HyriBasics extends JavaPlugin implements IPluginProvider {
 
+    private static final String PACKAGE = "fr.hyriode.basics";
     private static final String[] HEADER_LINES = new String[] {
             "  _  _          _ ___          _       ",
             " | || |_  _ _ _(_) _ ) __ _ __(_)__ ___",
@@ -50,6 +52,7 @@ public class HyriBasics extends JavaPlugin {
     private NicknameModule nicknameModule;
     private PrivateMessageModule privateMessageModule;
     private TabModule tabModule;
+    private AFKModule afkModule;
 
     @Override
     public void onEnable() {
@@ -59,7 +62,7 @@ public class HyriBasics extends JavaPlugin {
             log(line);
         }
 
-        this.hyrame = HyrameLoader.load(new Provider());
+        this.hyrame = HyrameLoader.load(this);
         this.friendModule = new FriendModule();
         this.partyModule = new PartyModule();
         this.boosterModule = new BoosterModule();
@@ -67,6 +70,7 @@ public class HyriBasics extends JavaPlugin {
         this.nicknameModule = new NicknameModule();
         this.privateMessageModule = new PrivateMessageModule();
         this.tabModule = new TabModule();
+        this.afkModule = new AFKModule();
 
         // Register HyriAPI events listeners
         HyriAPI.get().getNetworkManager().getEventBus().register(new AnnouncementListener());
@@ -142,40 +146,38 @@ public class HyriBasics extends JavaPlugin {
         return this.tabModule;
     }
 
-    private static class Provider implements IPluginProvider {
+    public AFKModule getAFKModule() {
+        return this.afkModule;
+    }
 
-        private static final String PACKAGE = "fr.hyriode.basics";
+    @Override
+    public JavaPlugin getPlugin() {
+        return HyriBasics.get();
+    }
 
-        @Override
-        public JavaPlugin getPlugin() {
-            return HyriBasics.get();
-        }
+    @Override
+    public String getId() {
+        return "hyribasics";
+    }
 
-        @Override
-        public String getId() {
-            return "hyribasics";
-        }
+    @Override
+    public String[] getCommandsPackages() {
+        return new String[]{PACKAGE};
+    }
 
-        @Override
-        public String[] getCommandsPackages() {
-            return new String[]{PACKAGE};
-        }
+    @Override
+    public String[] getListenersPackages() {
+        return new String[]{PACKAGE};
+    }
 
-        @Override
-        public String[] getListenersPackages() {
-            return new String[]{PACKAGE};
-        }
+    @Override
+    public String[] getItemsPackages() {
+        return new String[]{PACKAGE};
+    }
 
-        @Override
-        public String[] getItemsPackages() {
-            return new String[]{PACKAGE};
-        }
-
-        @Override
-        public String getLanguagesPath() {
-            return "/lang/";
-        }
-
+    @Override
+    public String getLanguagesPath() {
+        return "/lang/";
     }
 
 }

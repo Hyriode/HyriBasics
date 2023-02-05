@@ -25,11 +25,14 @@ jobs:
       - name: Edit libraries folder permissions
         run: sudo chmod -R 777 libs/
 
-      - name: Build  Jar
+      - name: Build Jar
         run: gradle build
         env:
           USERNAME: ${{ github.actor }}
           TOKEN: ${{ secrets.TOKEN }}
+
+      - name: Rename Jar
+        run: mv build/libs/HyriBasics-*.jar build/libs/HyriBasics.jar
 
       - name: Upload Jar
         uses: azure/CLI@v1
