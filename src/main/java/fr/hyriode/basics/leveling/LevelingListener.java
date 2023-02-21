@@ -1,7 +1,7 @@
 package fr.hyriode.basics.leveling;
 
 import fr.hyriode.api.event.HyriEventHandler;
-import fr.hyriode.api.leveling.event.HyriGainLevelEvent;
+import fr.hyriode.api.leveling.event.NetworkLevelEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -19,12 +19,12 @@ public class LevelingListener {
     }
 
     @HyriEventHandler
-    public void onLevelUp(HyriGainLevelEvent event) {
+    public void onLevelUp(NetworkLevelEvent event) {
         if (!event.getLeveling().equals("network")) {
             return;
         }
 
-        final Player player = Bukkit.getPlayer(event.getPlayer());
+        final Player player = Bukkit.getPlayer(event.getPlayerId());
 
         if (player != null) {
             this.levelingModule.onLevelUp(player, event.getOldLevel(), event.getNewLevel());

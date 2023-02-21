@@ -1,7 +1,7 @@
 package fr.hyriode.basics.command.network;
 
 import fr.hyriode.api.HyriAPI;
-import fr.hyriode.api.rank.type.HyriStaffRankType;
+import fr.hyriode.api.rank.StaffRank;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
 import fr.hyriode.hyrame.command.HyriCommand;
@@ -23,7 +23,7 @@ public class WhitelistCommand extends HyriCommand<HyriBasics> {
                 .withAliases("hyriwl")
                 .withType(HyriCommandType.PLAYER)
                 .withUsage("/hyriwhitelist add <player>")
-                .withPermission(player -> player.getRank().is(HyriStaffRankType.ADMINISTRATOR)));
+                .withPermission(player -> player.getRank().is(StaffRank.ADMINISTRATOR)));
     }
 
     @Override

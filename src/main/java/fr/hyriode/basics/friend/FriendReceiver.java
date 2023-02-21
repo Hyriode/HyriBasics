@@ -1,8 +1,8 @@
 package fr.hyriode.basics.friend;
 
-import fr.hyriode.api.friend.HyriFriendRequest;
 import fr.hyriode.api.packet.HyriPacket;
 import fr.hyriode.api.packet.IHyriPacketReceiver;
+import fr.hyriode.api.player.model.HyriFriendRequest;
 
 /**
  * Project: Hyrame
@@ -19,8 +19,8 @@ public class FriendReceiver implements IHyriPacketReceiver {
 
     @Override
     public void receive(String channel, HyriPacket packet) {
-        if (packet instanceof HyriFriendRequest.Packet) {
-            this.friendModule.onRequest(((HyriFriendRequest.Packet) packet).getRequest());
+        if (packet instanceof HyriFriendRequest) {
+            this.friendModule.onRequest((HyriFriendRequest) packet);
         }
     }
 

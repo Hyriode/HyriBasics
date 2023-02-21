@@ -1,7 +1,7 @@
 package fr.hyriode.basics.party;
 
 import fr.hyriode.api.player.IHyriPlayer;
-import fr.hyriode.api.rank.type.HyriPlayerRankType;
+import fr.hyriode.api.rank.PlayerRank;
 
 import java.util.function.Predicate;
 
@@ -11,12 +11,12 @@ import java.util.function.Predicate;
  */
 public enum PartyLimit {
 
-    PLAYER(HyriPlayerRankType.PLAYER, 5),
-    VIP(HyriPlayerRankType.VIP, 10),
-    VIP_PLUS(HyriPlayerRankType.VIP_PLUS, 15),
-    EPIC(HyriPlayerRankType.EPIC, 20),
-    EPIC_PLUS(IHyriPlayer::hasHyriPlus, 30),
-    PARTNER(HyriPlayerRankType.PARTNER, 50);
+    PLAYER(PlayerRank.PLAYER, 5),
+    VIP(PlayerRank.VIP, 10),
+    VIP_PLUS(PlayerRank.VIP_PLUS, 15),
+    EPIC(PlayerRank.EPIC, 20),
+    EPIC_PLUS(account -> account.getHyriPlus().has(), 30),
+    PARTNER(PlayerRank.PARTNER, 50);
 
     private final Predicate<IHyriPlayer> validation;
     private final int maxSlots;
@@ -26,7 +26,7 @@ public enum PartyLimit {
         this.maxSlots = maxSlots;
     }
 
-    PartyLimit(HyriPlayerRankType rankType, int maxSlots) {
+    PartyLimit(PlayerRank rankType, int maxSlots) {
         this(account -> account.getRank().is(rankType), maxSlots);
     }
 

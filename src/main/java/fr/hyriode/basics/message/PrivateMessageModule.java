@@ -3,7 +3,7 @@ package fr.hyriode.basics.message;
 import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.player.IHyriPlayer;
 import fr.hyriode.api.player.IHyriPlayerSession;
-import fr.hyriode.api.settings.SettingsLevel;
+import fr.hyriode.api.player.model.SettingsLevel;
 import fr.hyriode.api.sound.HyriSound;
 import fr.hyriode.api.sound.HyriSoundPacket;
 import fr.hyriode.basics.language.BasicsMessage;
@@ -58,7 +58,7 @@ public class PrivateMessageModule {
             return;
         }
 
-        final boolean areFriends = HyriAPI.get().getFriendManager().createHandler(targetId).areFriends(senderId);
+        final boolean areFriends = targetAccount.getFriends().has(senderId);
         final boolean isStaff = senderAccount.getRank().isStaff();
         final Predicate<SettingsLevel> validate = level -> level == SettingsLevel.ALL || (level == SettingsLevel.FRIENDS && areFriends) || isStaff;
 

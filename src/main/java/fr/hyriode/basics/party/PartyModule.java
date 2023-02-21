@@ -2,7 +2,7 @@ package fr.hyriode.basics.party;
 
 import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.packet.HyriChannel;
-import fr.hyriode.api.party.HyriPartyInvitation;
+import fr.hyriode.api.party.HyriPartyRequest;
 import fr.hyriode.api.player.IHyriPlayer;
 import fr.hyriode.basics.language.BasicsMessage;
 import fr.hyriode.hyrame.utils.Symbols;
@@ -24,14 +24,14 @@ public class PartyModule {
         HyriAPI.get().getNetworkManager().getEventBus().register(new PartyListener());
     }
 
-    public void onInvitation(HyriPartyInvitation invitation) {
-        final Player receiver = Bukkit.getPlayer(invitation.getReceiver());
+    public void onRequest(HyriPartyRequest request) {
+        final Player receiver = Bukkit.getPlayer(request.getTarget());
 
         if (receiver == null) {
             return;
         }
 
-        final IHyriPlayer sender = IHyriPlayer.get(invitation.getSender());
+        final IHyriPlayer sender = IHyriPlayer.get(request.getSender());
 
         receiver.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_INVITATION_RECEIVED_MESSAGE.asString(receiver).replace("%player%", sender.getNameWithRank()))
                 .append("\n")

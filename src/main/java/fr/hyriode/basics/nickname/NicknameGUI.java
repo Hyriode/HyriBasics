@@ -1,6 +1,6 @@
 package fr.hyriode.basics.nickname;
 
-import fr.hyriode.api.rank.type.HyriPlayerRankType;
+import fr.hyriode.api.rank.PlayerRank;
 import fr.hyriode.api.util.Skin;
 import fr.hyriode.basics.language.BasicsMessage;
 import fr.hyriode.basics.util.BasicsHead;
@@ -30,19 +30,19 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class NicknameGUI extends HyriInventory {
 
-    private static final List<HyriPlayerRankType> RANKS = Arrays.asList(HyriPlayerRankType.PLAYER, HyriPlayerRankType.VIP, HyriPlayerRankType.VIP_PLUS, HyriPlayerRankType.EPIC);
+    private static final List<PlayerRank> RANKS = Arrays.asList(PlayerRank.PLAYER, PlayerRank.VIP, PlayerRank.VIP_PLUS, PlayerRank.EPIC);
 
     private String currentNickname;
     private boolean randomNickname;
     private Skin currentSkin;
     private String currentSkinOwner;
-    private HyriPlayerRankType currentRank;
+    private PlayerRank currentRank;
 
     private int rankIndex;
 
     private final NicknameModule nicknameModule;
 
-    public NicknameGUI(Player owner, NicknameModule nicknameModule, String currentNickname, String currentSkinOwner, Skin currentSkin, HyriPlayerRankType currentRank) {
+    public NicknameGUI(Player owner, NicknameModule nicknameModule, String currentNickname, String currentSkinOwner, Skin currentSkin, PlayerRank currentRank) {
         super(owner, name(owner, "gui.nickname.title"), 6 * 9);
         this.nicknameModule = nicknameModule;
         this.currentNickname = currentNickname;
@@ -74,7 +74,7 @@ public class NicknameGUI extends HyriInventory {
         this.addItems();
     }
 
-    public NicknameGUI(Player owner, NicknameModule nicknameModule, String currentSkinOwner, Skin currentSkin, HyriPlayerRankType currentRank) {
+    public NicknameGUI(Player owner, NicknameModule nicknameModule, String currentSkinOwner, Skin currentSkin, PlayerRank currentRank) {
         this(owner, nicknameModule, nicknameModule.getLoader().getRandomNickname(), currentSkinOwner, currentSkin, currentRank);
     }
 
@@ -165,8 +165,8 @@ public class NicknameGUI extends HyriInventory {
         final List<String> lore = BasicsMessage.NICKNAME_GUI_RANK_LORE.asList(this.owner);
         final List<String> ranks = new ArrayList<>();
 
-        for (HyriPlayerRankType rankType : RANKS) {
-            final String prefix = rankType == HyriPlayerRankType.PLAYER ? BasicsMessage.PLAYER_RANK.asString(this.owner): rankType.getDefaultPrefix();
+        for (PlayerRank rankType : RANKS) {
+            final String prefix = rankType == PlayerRank.PLAYER ? BasicsMessage.PLAYER_RANK.asString(this.owner): rankType.getDefaultPrefix();
 
             ranks.add(" " + (rankType == this.currentRank ? ChatColor.WHITE + "▶ " + prefix : prefix));
         }
@@ -197,7 +197,7 @@ public class NicknameGUI extends HyriInventory {
                 .build();
 
         this.setItem(33, random, event -> {
-            HyriPlayerRankType rank = this.generateRandomRank();
+            PlayerRank rank = this.generateRandomRank();
 
             while (rank == this.currentRank) {
                 rank = this.generateRandomRank();
@@ -212,7 +212,7 @@ public class NicknameGUI extends HyriInventory {
         });
     }
 
-    private HyriPlayerRankType generateRandomRank() {
+    private PlayerRank generateRandomRank() {
         return RANKS.get(ThreadLocalRandom.current().nextInt(RANKS.size()));
     }
 

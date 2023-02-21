@@ -1,7 +1,6 @@
 package fr.hyriode.basics.friend;
 
 import fr.hyriode.api.event.HyriEventHandler;
-import fr.hyriode.api.friend.IHyriFriendHandler;
 import fr.hyriode.api.language.HyriLanguageMessage;
 import fr.hyriode.api.player.IHyriPlayer;
 import fr.hyriode.api.player.event.PlayerJoinNetworkEvent;
@@ -29,9 +28,8 @@ public class FriendListener {
     private void checkNotification(IHyriPlayer friend, HyriLanguageMessage message) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             final IHyriPlayer target = IHyriPlayer.get(player.getUniqueId());
-            final IHyriFriendHandler friendHandler = target.getFriendHandler();
 
-            if (friendHandler.areFriends(friend.getUniqueId()) && target.getSettings().isFriendConnectionNotificationEnabled()) {
+            if (target.getFriends().has(friend.getUniqueId()) && target.getSettings().isFriendConnectionNotificationEnabled()) {
                 player.sendMessage(message.getValue(target).replace("%player%", friend.getName()));
             }
         }

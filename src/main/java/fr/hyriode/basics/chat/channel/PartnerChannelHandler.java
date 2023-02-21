@@ -3,7 +3,7 @@ package fr.hyriode.basics.chat.channel;
 import fr.hyriode.api.chat.channel.IHyriChatChannelHandler;
 import fr.hyriode.api.player.IHyriPlayer;
 import fr.hyriode.api.player.IHyriPlayerSession;
-import fr.hyriode.api.rank.type.HyriPlayerRankType;
+import fr.hyriode.api.rank.PlayerRank;
 import fr.hyriode.basics.language.BasicsMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,7 +28,7 @@ public class PartnerChannelHandler implements IHyriChatChannelHandler {
         final Player player = Bukkit.getPlayer(sender);
         final IHyriPlayer senderAccount = IHyriPlayer.get(sender);
 
-        if (!senderAccount.getRank().is(HyriPlayerRankType.PARTNER)) {
+        if (!senderAccount.getRank().is(PlayerRank.PARTNER)) {
             player.sendMessage(BasicsMessage.CHAT_CHANNEL_PERMISSION_ERROR.asString(senderAccount));
             return;
         }
@@ -36,7 +36,7 @@ public class PartnerChannelHandler implements IHyriChatChannelHandler {
         for (Player target : Bukkit.getOnlinePlayers()) {
             final IHyriPlayer targetAccount = IHyriPlayer.get(target.getUniqueId());
 
-            if (!targetAccount.getRank().is(HyriPlayerRankType.PARTNER)) {
+            if (!targetAccount.getRank().is(PlayerRank.PARTNER)) {
                 continue;
             }
 

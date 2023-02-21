@@ -2,7 +2,7 @@ package fr.hyriode.basics.nickname;
 
 import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.player.IHyriPlayerSession;
-import fr.hyriode.api.player.nickname.IHyriNickname;
+import fr.hyriode.api.player.model.IHyriNickname;
 import fr.hyriode.hyrame.utils.ThreadUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

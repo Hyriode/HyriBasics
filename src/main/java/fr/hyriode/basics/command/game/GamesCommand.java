@@ -1,11 +1,11 @@
 package fr.hyriode.basics.command.game;
 
 import fr.hyriode.api.HyriAPI;
-import fr.hyriode.api.game.HyriGameType;
 import fr.hyriode.api.game.IHyriGameInfo;
 import fr.hyriode.api.game.IHyriGameManager;
+import fr.hyriode.api.game.IHyriGameType;
 import fr.hyriode.api.game.rotating.IHyriRotatingGameManager;
-import fr.hyriode.api.rank.type.HyriStaffRankType;
+import fr.hyriode.api.rank.StaffRank;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.hyrame.anvilgui.AnvilGUI;
 import fr.hyriode.hyrame.command.HyriCommand;
@@ -28,7 +28,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
@@ -43,7 +42,7 @@ public class GamesCommand extends HyriCommand<HyriBasics> {
         super(plugin, new HyriCommandInfo("games")
                 .withType(HyriCommandType.ALL)
                 .withUsage("/games")
-                .withPermission(player -> player.getRank().isSuperior(HyriStaffRankType.ADMINISTRATOR))
+                .withPermission(player -> player.getRank().isSuperior(StaffRank.ADMINISTRATOR))
                 .withDescription("Command used to interact with games.")
                 .withType(HyriCommandType.PLAYER));
     }
@@ -195,13 +194,13 @@ public class GamesCommand extends HyriCommand<HyriBasics> {
                     event -> new AnvilGUI(this.plugin, this.owner, "Nom du type", null, false, player -> this.open(), null, null, (player, typeName) -> {
                         new AnvilGUI(this.plugin, this.owner, "Nom (affiché) du type", null, false, p -> this.open(), null, null, (p, typeDisplay) -> {
                             int higherId = -1;
-                            for (HyriGameType gameType : this.gameInfo.getTypes().values()) {
+                            for (IHyriGameType gameType : this.gameInfo.getTypes()) {
                                 if (higherId < gameType.getId()) {
                                     higherId = gameType.getId();
                                 }
                             }
 
-                            this.gameInfo.addType(typeName, new HyriGameType(higherId + 1, typeDisplay));
+                            this.gameInfo.addType(higherId + 1, typeName, typeDisplay);
                             this.gameInfo.update();
 
                             this.owner.sendMessage(ChatColor.GREEN + "Type correctement ajouté.");
@@ -223,18 +222,16 @@ public class GamesCommand extends HyriCommand<HyriBasics> {
 
             pagination.clear();
 
-            for (Map.Entry<String, HyriGameType> entry : this.gameInfo.getTypes().entrySet().stream().sorted(Comparator.comparingInt(o -> o.getValue().getId())).collect(Collectors.toList())) {
-                final String typeName = entry.getKey();
-                final HyriGameType type = entry.getValue();
+            for (IHyriGameType type : this.gameInfo.getTypes().stream().sorted(Comparator.comparingInt(IHyriGameType::getId)).collect(Collectors.toList())) {
                 final ItemStack itemStack = new ItemBuilder(Material.MAP)
                         .withName(ChatColor.AQUA + type.getDisplayName())
-                        .withLore(LORE_FORMATTER.apply("Nom", typeName), LORE_FORMATTER.apply("Id", String.valueOf(type.getId())), "", ChatColor.RED + "Clic-droit pour supprimer")
+                        .withLore(LORE_FORMATTER.apply("Nom", type.getName()), LORE_FORMATTER.apply("Id", String.valueOf(type.getId())), "", ChatColor.RED + "Clic-droit pour supprimer")
                         .withAllItemFlags()
                         .build();
 
                 pagination.add(PaginatedItem.from(itemStack, event -> {
                     if (event.isRightClick()) {
-                        this.gameInfo.removeType(typeName);
+                        this.gameInfo.removeType(type.getName());
                         this.gameInfo.update();
 
                         this.owner.sendMessage(ChatColor.RED + "Le type a bien été supprimé.");

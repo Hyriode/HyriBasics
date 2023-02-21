@@ -3,7 +3,7 @@ package fr.hyriode.basics.chat;
 import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.chat.channel.HyriChatChannel;
 import fr.hyriode.api.player.IHyriPlayer;
-import fr.hyriode.api.settings.IHyriPlayerSettings;
+import fr.hyriode.api.player.model.IHyriPlayerSettings;
 import fr.hyriode.hyrame.chat.IHyriChatHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 

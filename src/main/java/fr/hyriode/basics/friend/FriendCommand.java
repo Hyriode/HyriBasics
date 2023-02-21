@@ -1,10 +1,9 @@
 package fr.hyriode.basics.friend;
 
-import fr.hyriode.api.HyriAPI;
-import fr.hyriode.api.friend.IHyriFriend;
-import fr.hyriode.api.friend.IHyriFriendHandler;
 import fr.hyriode.api.player.IHyriPlayer;
 import fr.hyriode.api.player.IHyriPlayerSession;
+import fr.hyriode.api.player.model.IHyriFriend;
+import fr.hyriode.api.player.model.modules.IHyriFriendsModule;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
 import fr.hyriode.hyrame.command.*;
@@ -48,31 +47,38 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
     public void handle(HyriCommandContext ctx) {
         final Player player = (Player) ctx.getSender();
         final UUID playerId = player.getUniqueId();
-        final IHyriPlayer account = HyriAPI.get().getPlayerManager().getPlayer(playerId);
+        final IHyriPlayer account = IHyriPlayer.get(playerId);
         final FriendModule friendModule = HyriBasics.get().getFriendModule();
-        final IHyriFriendHandler friendHandler = HyriAPI.get().getFriendManager().createHandler(playerId);
+        final IHyriFriendsModule friends = account.getFriends();
 
         this.handleArgument(ctx, "accept %player%", output -> {
             final IHyriPlayer sender = output.get(IHyriPlayer.class);
 
-            if (!friendModule.hasRequest(player, sender)) {
+            if (!friendModule.hasRequest(player, friends, sender)) {
                 return;
             }
 
             final int friendsLimit = FriendLimit.getMaxFriends(account.getRank().getPlayerType());
 
-            if (friendHandler.getFriends().size() >= friendsLimit) { // Check if player has reached his limit
+            if (friends.getAll().size() >= friendsLimit) { // Check if player has reached his limit
                 player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_LIMIT_MESSAGE.asString(player).replace("%limit%", String.valueOf(friendsLimit)))));
                 return;
             }
 
-            if (sender.getFriendHandler().getFriends().size() >= FriendLimit.getMaxFriends(sender.getRank().getPlayerType())) { // Check if requester has reached friends limit
+            if (sender.getFriends().getAll().size() >= FriendLimit.getMaxFriends(sender.getRank().getPlayerType())) { // Check if requester has reached friends limit
                 player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_LIMIT_TARGET_MESSAGE.asString(player).replace("%player%", sender.getNameWithRank()))));
                 return;
             }
 
-            HyriAPI.get().getFriendManager().removeRequest(playerId, sender.getUniqueId()); // Remove request
-            friendHandler.addFriend(sender.getUniqueId()); // Set players as friends
+            // Remove request
+            friends.removeRequest(sender.getUniqueId());
+
+            // Set players as friends
+            friends.add(sender.getUniqueId());
+            sender.getFriends().add(playerId);
+
+            account.update();
+            sender.update();
 
             PlayerUtil.sendComponent(sender.getUniqueId(), createMessage(builder -> builder.append(BasicsMessage.FRIEND_ACCEPT_MESSAGE.asString(sender).replace("%player%", account.getNameWithRank())))); // Send message to the request sender
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_ACCEPT_MESSAGE.asString(account).replace("%player%", sender.getNameWithRank())))); // Send the message to the request receiver
@@ -81,11 +87,11 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
         this.handleArgument(ctx, "deny %player%", output -> {
             final IHyriPlayer sender = output.get(IHyriPlayer.class);
 
-            if (!friendModule.hasRequest(player, sender)) {
+            if (!friendModule.hasRequest(player, friends, sender)) {
                 return;
             }
 
-            HyriAPI.get().getFriendManager().removeRequest(playerId, sender.getUniqueId()); // Remove request
+            friends.removeRequest(sender.getUniqueId()); // Remove request
 
             PlayerUtil.sendComponent(sender.getUniqueId(), createMessage(builder -> builder.append(BasicsMessage.FRIEND_DENY_SENDER_MESSAGE.asString(sender).replace("%player%", account.getNameWithRank())))); // Send the message to the request sender
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_DENY_TARGET_MESSAGE.asString(account).replace("%player%", sender.getNameWithRank())))); // Send the message to the request receiver
@@ -94,23 +100,28 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
         this.handleArgument(ctx, "remove %player%", output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
 
-            if (friendModule.areNotFriends(friendHandler, player, target)) { // Check whether they are not friends
+            if (friendModule.areNotFriends(friends, player, target)) { // Check whether they are not friends
                 return;
             }
 
-            friendHandler.removeFriend(target.getUniqueId()); // Set players as not friends
+            // Set players as not friends
+            friends.remove(target.getUniqueId());
+            target.getFriends().remove(playerId);
+
+            account.update();
+            target.update();
 
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_NO_LONGER_MESSAGE.asString(account).replace("%player%", target.getNameWithRank())))); // Send message to the player
         });
 
-        this.handleArgument(ctx, "list %integer%", output -> this.listFriends(output.get(Integer.class), player, account, friendHandler));
-        this.handleArgument(ctx, "list", output -> this.listFriends(0, player, account, friendHandler));
+        this.handleArgument(ctx, "list %integer%", output -> this.listFriends(output.get(Integer.class), player, account, friends));
+        this.handleArgument(ctx, "list", output -> this.listFriends(0, player, account, friends));
         this.handleArgument(ctx, "help", output -> player.spigot().sendMessage(HELP.apply(player)));
-        this.handleArgument(ctx, "%player_online%", this.addFriend(player, account, friendHandler));
-        this.handleArgument(ctx, "add %player_online%", this.addFriend(player, account, friendHandler));
+        this.handleArgument(ctx, "%player_online%", this.addFriend(player, account, friends));
+        this.handleArgument(ctx, "add %player_online%", this.addFriend(player, account, friends));
     }
 
-    private Consumer<HyriCommandOutput> addFriend(Player player, IHyriPlayer account, IHyriFriendHandler friendHandler) {
+    private Consumer<HyriCommandOutput> addFriend(Player player, IHyriPlayer account, IHyriFriendsModule friends) {
         return output -> {
             final UUID playerId = player.getUniqueId();
             final IHyriPlayer target = output.get(IHyriPlayer.class);
@@ -120,11 +131,11 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
                 return;
             }
 
-            if (HyriBasics.get().getFriendModule().areFriends(friendHandler, player, target)) { // Check if the players are already friends
+            if (HyriBasics.get().getFriendModule().areFriends(friends, player, target)) { // Check if the players are already friends
                 return;
             }
 
-            if (HyriAPI.get().getFriendManager().hasRequest(target.getUniqueId(), playerId)) { // Check if the player already sent a request to the target
+            if (target.getFriends().hasRequest(playerId)) { // Check if the player already sent a request to the target
                 player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_REQUEST_ALREADY_MESSAGE.asString(player).replace("%player%", target.getNameWithRank()))));
                 return;
             }
@@ -138,12 +149,12 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
 
             final int friendsLimit = FriendLimit.getMaxFriends(account.getRank().getPlayerType());
 
-            if (friendHandler.getFriends().size() >= friendsLimit) { // Check if player has reached his friends limit
+            if (friends.getAll().size() >= friendsLimit) { // Check if player has reached his friends limit
                 player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_LIMIT_MESSAGE.asString(account).replace("%limit%", String.valueOf(friendsLimit)))));
                 return;
             }
 
-            if (targetSession.hasNickname() && !account.getRank().isStaff()) { // Check if the target has a nickname
+            if (targetSession.getNickname().has() && !account.getRank().isStaff()) { // Check if the target has a nickname
                 player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_DOESNT_ACCEPT_MESSAGE.asString(account).replace("%player%", targetSession.getNameWithRank()))));
                 return;
             }
@@ -153,14 +164,14 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
                 return;
             }
 
-            HyriAPI.get().getFriendManager().sendRequest(player.getUniqueId(), target.getUniqueId()); // Finally, send request
+            target.getFriends().sendRequest(player.getUniqueId()); // Finally, send request
 
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_REQUEST_SENT_MESSAGE.asString(player).replace("%player%", target.getNameWithRank()))));
         };
     }
 
-    private void listFriends(int page, Player player, IHyriPlayer account, IHyriFriendHandler friendHandler) {
-        final List<IHyriFriend> friends = friendHandler.getFriends();
+    private void listFriends(int page, Player player, IHyriPlayer account, IHyriFriendsModule friendsModule) {
+        final List<IHyriFriend> friends = friendsModule.getAll();
 
         if (friends.size() == 0) {
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_NO_FRIEND_MESSAGE.asString(account))));

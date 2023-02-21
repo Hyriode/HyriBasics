@@ -1,10 +1,10 @@
 package fr.hyriode.basics.friend;
 
 import fr.hyriode.api.HyriAPI;
-import fr.hyriode.api.friend.HyriFriendRequest;
-import fr.hyriode.api.friend.IHyriFriendHandler;
-import fr.hyriode.api.friend.IHyriFriendManager;
+import fr.hyriode.api.packet.HyriChannel;
 import fr.hyriode.api.player.IHyriPlayer;
+import fr.hyriode.api.player.model.HyriFriendRequest;
+import fr.hyriode.api.player.model.modules.IHyriFriendsModule;
 import fr.hyriode.basics.language.BasicsMessage;
 import fr.hyriode.hyrame.utils.Symbols;
 import net.md_5.bungee.api.ChatColor;
@@ -23,11 +23,11 @@ public class FriendModule {
 
     public FriendModule() {
         HyriAPI.get().getNetworkManager().getEventBus().register(new FriendListener());
-        HyriAPI.get().getPubSub().subscribe(IHyriFriendManager.REDIS_CHANNEL, new FriendReceiver(this));
+        HyriAPI.get().getPubSub().subscribe(HyriChannel.FRIENDS, new FriendReceiver(this));
     }
 
     public void onRequest(HyriFriendRequest request) {
-        final Player player = Bukkit.getPlayer(request.getReceiver());
+        final Player player = Bukkit.getPlayer(request.getTarget());
 
         if (player != null) {
             final IHyriPlayer sender = IHyriPlayer.get(request.getSender());
@@ -44,24 +44,24 @@ public class FriendModule {
         }
     }
 
-    public boolean hasRequest(Player player, IHyriPlayer sender) {
-        if (!HyriAPI.get().getFriendManager().hasRequest(player.getUniqueId(), sender.getUniqueId())) {
+    public boolean hasRequest(Player player, IHyriFriendsModule friends, IHyriPlayer sender) {
+        if (!friends.hasRequest(sender.getUniqueId())) {
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_NO_REQUEST_MESSAGE.asString(player).replace("%player%", sender.getNameWithRank()))));
             return false;
         }
         return true;
     }
 
-    public boolean areFriends(IHyriFriendHandler friendHandler, Player player, IHyriPlayer target) {
-        if (friendHandler.areFriends(target.getUniqueId())) {
+    public boolean areFriends(IHyriFriendsModule friends, Player player, IHyriPlayer target) {
+        if (friends.has(target.getUniqueId())) {
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_ALREADY_MESSAGE.asString(player).replace("%player%", target.getNameWithRank()))));
             return true;
         }
         return false;
     }
 
-    public boolean areNotFriends(IHyriFriendHandler friendHandler, Player player, IHyriPlayer target) {
-        if (!friendHandler.areFriends(target.getUniqueId())) {
+    public boolean areNotFriends(IHyriFriendsModule friends, Player player, IHyriPlayer target) {
+        if (!friends.has(target.getUniqueId())) {
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_NOT_ALREADY_MESSAGE.asString(player).replace("%player%", target.getNameWithRank()))));
             return true;
         }

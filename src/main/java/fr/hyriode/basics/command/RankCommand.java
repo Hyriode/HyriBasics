@@ -1,8 +1,8 @@
 package fr.hyriode.basics.command;
 
 import fr.hyriode.api.player.IHyriPlayer;
-import fr.hyriode.api.rank.type.HyriPlayerRankType;
-import fr.hyriode.api.rank.type.HyriStaffRankType;
+import fr.hyriode.api.rank.PlayerRank;
+import fr.hyriode.api.rank.StaffRank;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.hyrame.command.HyriCommand;
 import fr.hyriode.hyrame.command.HyriCommandContext;
@@ -26,7 +26,7 @@ public class RankCommand extends HyriCommand<HyriBasics> {
                 .withType(HyriCommandType.PLAYER)
                 .withUsage("/rank")
                 .asynchronous()
-                .withPermission(player -> player.getRank().is(HyriStaffRankType.ADMINISTRATOR)));
+                .withPermission(player -> player.getRank().is(StaffRank.ADMINISTRATOR)));
     }
 
     @Override
@@ -41,10 +41,10 @@ public class RankCommand extends HyriCommand<HyriBasics> {
                 return;
             }
 
-            final HyriPlayerRankType rankType = this.getPlayerByName(output.get(String.class));
+            final PlayerRank rankType = this.getPlayerByName(output.get(String.class));
 
             if (rankType != null) {
-                target.setPlayerRank(rankType);
+                target.getRank().setPlayerType(rankType);
                 target.update();
 
                 player.sendMessage(ChatColor.GREEN + "Grade joueur modifié!");
@@ -60,7 +60,7 @@ public class RankCommand extends HyriCommand<HyriBasics> {
                 return;
             }
 
-            target.setStaffRank(null);
+            target.getRank().setStaffType(null);
             target.update();
 
             player.sendMessage(ChatColor.GREEN + "Grade staff reset!");
@@ -73,10 +73,10 @@ public class RankCommand extends HyriCommand<HyriBasics> {
                 return;
             }
 
-            final HyriStaffRankType rankType = this.getStaffByName(output.get(String.class));
+            final StaffRank rankType = this.getStaffByName(output.get(String.class));
 
             if (rankType != null) {
-                target.setStaffRank(rankType);
+                target.getRank().setStaffType(rankType);
                 target.update();
 
                 player.sendMessage(ChatColor.GREEN + "Grade staff modifié!");
@@ -86,8 +86,8 @@ public class RankCommand extends HyriCommand<HyriBasics> {
         });
     }
 
-    private HyriStaffRankType getStaffByName(String name) {
-        for (HyriStaffRankType rankType : HyriStaffRankType.values()) {
+    private StaffRank getStaffByName(String name) {
+        for (StaffRank rankType : StaffRank.values()) {
             if (rankType.getName().equals(name)) {
                 return rankType;
             }
@@ -95,8 +95,8 @@ public class RankCommand extends HyriCommand<HyriBasics> {
         return null;
     }
 
-    private HyriPlayerRankType getPlayerByName(String name) {
-        for (HyriPlayerRankType rankType : HyriPlayerRankType.values()) {
+    private PlayerRank getPlayerByName(String name) {
+        for (PlayerRank rankType : PlayerRank.values()) {
             if (rankType.getName().equals(name)) {
                 return rankType;
             }

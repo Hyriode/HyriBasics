@@ -2,7 +2,7 @@ package fr.hyriode.basics.party;
 
 import fr.hyriode.api.packet.HyriPacket;
 import fr.hyriode.api.packet.IHyriPacketReceiver;
-import fr.hyriode.api.party.HyriPartyInvitation;
+import fr.hyriode.api.party.HyriPartyRequest;
 
 /**
  * Project: Hyrame
@@ -19,8 +19,8 @@ public class PartyReceiver implements IHyriPacketReceiver {
 
     @Override
     public void receive(String channel, HyriPacket packet) {
-        if (packet instanceof HyriPartyInvitation.Packet) {
-            this.partyModule.onInvitation(((HyriPartyInvitation.Packet) packet).getInvitation());
+        if (packet instanceof HyriPartyRequest) {
+            this.partyModule.onRequest((HyriPartyRequest) packet);
         }
     }
 

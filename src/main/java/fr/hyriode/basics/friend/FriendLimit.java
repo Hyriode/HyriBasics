@@ -1,6 +1,6 @@
 package fr.hyriode.basics.friend;
 
-import fr.hyriode.api.rank.type.HyriPlayerRankType;
+import fr.hyriode.api.rank.PlayerRank;
 
 /**
  * Project: Hyrame
@@ -9,21 +9,21 @@ import fr.hyriode.api.rank.type.HyriPlayerRankType;
  */
 public enum FriendLimit {
 
-    PLAYER(HyriPlayerRankType.PLAYER, 10),
-    VIP(HyriPlayerRankType.VIP, 20),
-    VIP_PLUS(HyriPlayerRankType.VIP_PLUS, 35),
-    EPIC(HyriPlayerRankType.EPIC, 50),
-    PARTNER(HyriPlayerRankType.PARTNER, 75);
+    PLAYER(PlayerRank.PLAYER, 10),
+    VIP(PlayerRank.VIP, 20),
+    VIP_PLUS(PlayerRank.VIP_PLUS, 35),
+    EPIC(PlayerRank.EPIC, 50),
+    PARTNER(PlayerRank.PARTNER, 75);
 
-    private final HyriPlayerRankType associatedRank;
+    private final PlayerRank associatedRank;
     private final int maxFriends;
 
-    FriendLimit(HyriPlayerRankType associatedRank, int maxFriends) {
+    FriendLimit(PlayerRank associatedRank, int maxFriends) {
         this.associatedRank = associatedRank;
         this.maxFriends = maxFriends;
     }
 
-    public static int getMaxFriends(HyriPlayerRankType rankType) {
+    public static int getMaxFriends(PlayerRank rankType) {
         for (FriendLimit limit : values()) {
             if (limit.getAssociatedRank() == rankType) {
                 return limit.getMaxFriends();
@@ -32,7 +32,7 @@ public enum FriendLimit {
         return -1;
     }
 
-    public HyriPlayerRankType getAssociatedRank() {
+    public PlayerRank getAssociatedRank() {
         return this.associatedRank;
     }
 

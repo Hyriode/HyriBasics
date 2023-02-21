@@ -1,7 +1,7 @@
 package fr.hyriode.basics.annoucement;
 
 import fr.hyriode.api.HyriAPI;
-import fr.hyriode.api.rank.type.HyriStaffRankType;
+import fr.hyriode.api.rank.StaffRank;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.hyrame.command.HyriCommand;
 import fr.hyriode.hyrame.command.HyriCommandContext;
@@ -23,7 +23,7 @@ public class AnnouncementCommand extends HyriCommand<HyriBasics> {
                 .withAliases("bc", "broadcast", "annonce", "announce", "announcement")
                 .withType(HyriCommandType.PLAYER)
                 .withUsage("/broadcast <message>")
-                .withPermission(player -> player.getRank().is(HyriStaffRankType.ADMINISTRATOR)));
+                .withPermission(player -> player.getRank().is(StaffRank.ADMINISTRATOR)));
     }
 
     @Override

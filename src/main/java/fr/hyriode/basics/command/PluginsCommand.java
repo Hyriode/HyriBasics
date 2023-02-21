@@ -55,7 +55,7 @@ public class PluginsCommand extends HyriCommand<HyriBasics> {
                     .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover));
         }
 
-        builder.append(ChatColor.DARK_AQUA + "" + ChatColor.STRIKETHROUGH + Symbols.HYPHENS_LINE + "\n");
+        builder.append(ChatColor.DARK_AQUA + "" + ChatColor.STRIKETHROUGH + Symbols.HYPHENS_LINE);
 
         player.spigot().sendMessage(builder.create());
     }

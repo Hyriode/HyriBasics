@@ -2,7 +2,7 @@ package fr.hyriode.basics.command;
 
 import fr.hyriode.api.player.IHyriPlayer;
 import fr.hyriode.api.player.IHyriPlayerSession;
-import fr.hyriode.api.rank.type.HyriPlayerRankType;
+import fr.hyriode.api.rank.PlayerRank;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
 import fr.hyriode.hyrame.command.HyriCommand;
@@ -25,7 +25,7 @@ public class VanishCommand extends HyriCommand<HyriBasics> {
                 .withDescription("The command used to vanish yourself from other players")
                 .withType(HyriCommandType.PLAYER)
                 .withUsage("/vanish")
-                .withPermission(player -> player.getRank().is(HyriPlayerRankType.PARTNER)));
+                .withPermission(player -> player.getRank().is(PlayerRank.PARTNER)));
     }
 
     @Override

@@ -5,8 +5,8 @@ import com.mojang.authlib.properties.Property;
 import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.player.IHyriPlayer;
 import fr.hyriode.api.player.IHyriPlayerSession;
-import fr.hyriode.api.player.nickname.IHyriNickname;
-import fr.hyriode.api.rank.type.HyriPlayerRankType;
+import fr.hyriode.api.player.model.IHyriNickname;
+import fr.hyriode.api.rank.PlayerRank;
 import fr.hyriode.api.util.Skin;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
@@ -36,7 +36,7 @@ public class NicknameModule {
         HyriBasics.get().getServer().getPluginManager().registerEvents(new NicknameHandler(this), HyriBasics.get());
     }
 
-    public void processNickname(Player player, String nick, String skinOwner, Skin skin, HyriPlayerRankType rankType, boolean mojangCheck) {
+    public void processNickname(Player player, String nick, String skinOwner, Skin skin, PlayerRank rankType, boolean mojangCheck) {
         if (!this.isNicknameAvailable(nick, mojangCheck) && !HyriAPI.get().getPlayerManager().getNicknameManager().getPlayerUsingNickname(nick).equals(player.getUniqueId())) {
             player.sendMessage(BasicsMessage.NICKNAME_PLAYER_EXISTS_MESSAGE.asString(player));
             return;
@@ -44,18 +44,19 @@ public class NicknameModule {
 
         final UUID playerId = player.getUniqueId();
         final IHyriPlayerSession session = IHyriPlayerSession.get(playerId);
+        final IHyriNickname nickname = session.getNickname();
 
-        final IHyriNickname oldNickname = session.getNickname();
-
-        if (oldNickname != null) {
-            HyriAPI.get().getPlayerManager().getNicknameManager().removeUsedNickname(oldNickname.getName());
+        if (nickname.getName() != null) {
+            HyriAPI.get().getPlayerManager().getNicknameManager().removeUsedNickname(nickname.getName());
         }
 
-        final IHyriNickname nickname = session.createNickname(nick, skinOwner, skin);
+        nickname.setName(nick);
+        nickname.setSkinOwner(skinOwner);
+        nickname.setSkin(skin);
+        nickname.setRank(rankType);
 
         this.applyNickname(player, nickname.getName(), skin);
 
-        nickname.setRank(rankType);
         nickname.update(playerId);
         session.update();
 
@@ -65,7 +66,7 @@ public class NicknameModule {
     }
 
     public void processNickname(Player player) {
-        this.processNickname(player, this.loader.getRandomNickname(), null, this.loader.getRandomSkin(), HyriPlayerRankType.PLAYER, false);
+        this.processNickname(player, this.loader.getRandomNickname(), null, this.loader.getRandomSkin(), PlayerRank.PLAYER, false);
     }
 
     public void applyNickname(Player player, String nickname, String textureData, String textureSignature) {
@@ -99,8 +100,12 @@ public class NicknameModule {
 
     public void resetNickname(Player player) {
         final IHyriPlayerSession session = IHyriPlayerSession.get(player.getUniqueId());
+        final IHyriNickname nickname = session.getNickname();
 
-        session.setNickname(null);
+        nickname.setName(null);
+        nickname.setSkinOwner(null);
+        nickname.setSkin(null);
+        nickname.setRank(null);
         session.update();
 
         this.applyNickname(player, IHyriPlayer.get(player.getUniqueId()).getName()); // Set player nickname to its original name

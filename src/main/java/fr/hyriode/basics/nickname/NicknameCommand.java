@@ -2,8 +2,8 @@ package fr.hyriode.basics.nickname;
 
 import fr.hyriode.api.player.IHyriPlayer;
 import fr.hyriode.api.player.IHyriPlayerSession;
-import fr.hyriode.api.player.nickname.IHyriNickname;
-import fr.hyriode.api.rank.type.HyriPlayerRankType;
+import fr.hyriode.api.player.model.IHyriNickname;
+import fr.hyriode.api.rank.PlayerRank;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
 import fr.hyriode.hyrame.IHyrame;
@@ -26,7 +26,7 @@ public class NicknameCommand extends HyriCommand<HyriBasics> {
                 .withAliases("disguise")
                 .withDescription("The command used to edit profile name, skin, etc.")
                 .withType(HyriCommandType.PLAYER)
-                .withPermission(IHyriPlayer::hasHyriPlus) // Handle staff, Hyri+ and Partners
+                .withPermission(account -> account.getHyriPlus().has()) // Handle staff, Hyri+ and Partners
                 .withUsage("/nick [custom|reset]")
                 .asynchronous());
     }
@@ -51,12 +51,12 @@ public class NicknameCommand extends HyriCommand<HyriBasics> {
         }
 
         this.handleArgument(ctx, "custom", output -> {
-            if (account.getRank().is(HyriPlayerRankType.PARTNER)) {
+            if (account.getRank().is(PlayerRank.PARTNER)) {
                 ThreadUtil.backOnMainThread(HyriBasics.get(), () -> { // Get back on server thread to open the GUI
                     if (currentNickname != null) {
                         new NicknameGUI(player, nicknameModule, currentNickname.getName(), currentNickname.getSkinOwner(), currentNickname.getSkin(), currentNickname.getRank()).open();
                     } else {
-                        new NicknameGUI(player, nicknameModule, null, nicknameModule.getLoader().getRandomSkin(), HyriPlayerRankType.PLAYER).open();
+                        new NicknameGUI(player, nicknameModule, null, nicknameModule.getLoader().getRandomSkin(), PlayerRank.PLAYER).open();
                     }
                 });
             } else {
