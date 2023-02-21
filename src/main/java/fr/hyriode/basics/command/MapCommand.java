@@ -8,17 +8,8 @@ import fr.hyriode.basics.language.BasicsMessage;
 import fr.hyriode.hyrame.command.HyriCommand;
 import fr.hyriode.hyrame.command.HyriCommandContext;
 import fr.hyriode.hyrame.command.HyriCommandInfo;
-import fr.hyriode.hyrame.utils.Symbols;
 import fr.hyriode.hyrame.utils.TimeUtil;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.util.Date;
 import java.util.List;
@@ -49,29 +40,23 @@ public class MapCommand extends HyriCommand<HyriBasics> {
             world = HyriAPI.get().getWorldManager().getWorld(server.getType(), Objects.requireNonNull(server.getMap()));
         }
 
-        final ComponentBuilder builder = new ComponentBuilder(ChatColor.DARK_AQUA + "" + ChatColor.STRIKETHROUGH + Symbols.HYPHENS_LINE + "\n")
-                .append(BasicsMessage.COMMAND_MAP_MESSAGE.asString(player)
-                        .replace("%name%", world.getName())
-                        .replace("%creation_date%", TimeUtil.formatDate(new Date(world.getCreationDate()), "dd/MM/yyyy"))
-                        .replace("%authors%", this.formatAuthors(world.getAuthors())))
-                .append("\n");
-
-        builder.append(ChatColor.DARK_AQUA + "" + ChatColor.STRIKETHROUGH + Symbols.HYPHENS_LINE);
-
-        player.spigot().sendMessage(builder.create());
+        player.sendMessage(BasicsMessage.COMMAND_MAP_MESSAGE.asString(player)
+                .replace("%name%", world.getName())
+                .replace("%creation_date%", TimeUtil.formatDate(new Date(world.getCreationDate()), "dd/MM/yyyy"))
+                .replace("%builders%", this.formatAuthors(world.getAuthors())));
     }
 
     private String formatAuthors(List<String> authors) {
-        final StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
 
         if (authors.size() == 0) {
             return "-";
         }
 
         for (String author : authors) {
-            stringBuilder.append(author).append(", ");
+            builder.append(author).append(", ");
         }
-        return stringBuilder.substring(0, stringBuilder.toString().length() - 2);
+        return builder.substring(0, builder.toString().length() - 2);
     }
 
 }

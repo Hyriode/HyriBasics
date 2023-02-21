@@ -23,7 +23,7 @@
   "command.rejoin.processing": "&8▪ &bReconnexion &7en cours...",
   "command.rejoin.cancel": "&cImpossible de vous reconnecter à un jeu!",
 
-  "command.map.message": "&m&m--------------------------------------------------\n&3Informations de la carte:\n&bNom: &f%name%\n&bDate de création: &f%creation_date%\n&bBuilders: &f%builders%\n&3&m--------------------------------------------------",
+  "command.map.message": "&3&m--------------------------------------------------\n&3Informations de la carte:\n&bNom: &f%name%\n&bDate de création: &f%creation_date%\n&bBuilders: &f%builders%\n&3&m--------------------------------------------------",
 
   "command.plugins.message": "&3Informations du serveur:\n&bActuel: &f%server%\n&bVersion: &f%version%\n&bPlugins:",
   "command.plugins.hover.name": "&bNom: &f%name%",
