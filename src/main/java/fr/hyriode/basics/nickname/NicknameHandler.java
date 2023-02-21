@@ -35,7 +35,7 @@ public class NicknameHandler implements Listener {
 
         final IHyriNickname nickname = session.getNickname();
 
-        if (nickname != null) {
+        if (nickname.has()) {
             ThreadUtil.ASYNC_EXECUTOR.execute(() -> this.nicknameModule.applyNickname(player, nickname.getName(), nickname.getSkin()));
         }
     }

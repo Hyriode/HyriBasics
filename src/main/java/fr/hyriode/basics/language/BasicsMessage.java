@@ -39,6 +39,8 @@ public enum BasicsMessage {
     COMMAND_REJOIN_ADDED("command.rejoin.processing"),
     COMMAND_REJOIN_CANCEL("command.rejoin.cancel"),
 
+    COMMAND_MAP_MESSAGE("command.map.message"),
+
     COMMAND_PLUGINS_MESSAGE("command.plugins.message"),
     COMMAND_PLUGINS_HOVER_NAME("command.plugins.hover.name"),
     COMMAND_PLUGINS_HOVER_VERSION("command.plugins.hover.version"),

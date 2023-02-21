@@ -53,7 +53,7 @@ public class NicknameCommand extends HyriCommand<HyriBasics> {
         this.handleArgument(ctx, "custom", output -> {
             if (account.getRank().is(PlayerRank.PARTNER)) {
                 ThreadUtil.backOnMainThread(HyriBasics.get(), () -> { // Get back on server thread to open the GUI
-                    if (currentNickname != null) {
+                    if (currentNickname.has()) {
                         new NicknameGUI(player, nicknameModule, currentNickname.getName(), currentNickname.getSkinOwner(), currentNickname.getSkin(), currentNickname.getRank()).open();
                     } else {
                         new NicknameGUI(player, nicknameModule, null, nicknameModule.getLoader().getRandomSkin(), PlayerRank.PLAYER).open();
@@ -65,7 +65,7 @@ public class NicknameCommand extends HyriCommand<HyriBasics> {
         });
 
         this.handleArgument(ctx, "reset", output -> {
-            if (currentNickname != null) {
+            if (currentNickname.has()) {
                 nicknameModule.resetNickname(player);
 
                 player.sendMessage(BasicsMessage.NICKNAME_REMOVE_NICK_MESSAGE.asString(account));
