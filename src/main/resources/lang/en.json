@@ -23,7 +23,7 @@
   "command.rejoin.processing": "&8▪ &bReconnection &7processing...",
   "command.rejoin.cancel": "&cCouldn't reconnect you to a game!",
 
-  "command.map.message": "&3&m--------------------------------------------------\n&3Map information:\n&bName: &f%name%\n&bCreation date: &f%creation_date%\n&bBuilders: &f%builders%\n&3&m--------------------------------------------------",
+  "command.map.message": "&3&m--------------------------------------------------\n&3Map information:\n&bName: &f%name%\n&bCreation date: &f%creation_date%\n&bBuilder(s): &f%builders%\n&3&m--------------------------------------------------",
 
   "command.plugins.message": "&3Server information:\n&bCurrent: &f%server%\n&bVersion: &f%version%\n&bPlugins:",
   "command.plugins.hover.name": "&bName: &f%name%",

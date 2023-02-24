@@ -4,7 +4,7 @@ import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.chat.channel.HyriChatChannel;
 import fr.hyriode.api.chat.channel.IHyriChatChannelHandler;
 import fr.hyriode.basics.afk.AFKModule;
-import fr.hyriode.basics.annoucement.AnnouncementListener;
+import fr.hyriode.basics.announcement.AnnouncementListener;
 import fr.hyriode.basics.booster.BoosterModule;
 import fr.hyriode.basics.chat.DefaultChatHandler;
 import fr.hyriode.basics.chat.channel.GlobalChannelHandler;

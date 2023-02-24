@@ -1,4 +1,4 @@
-package fr.hyriode.basics.annoucement;
+package fr.hyriode.basics.announcement;
 
 import fr.hyriode.api.event.HyriEventHandler;
 import fr.hyriode.basics.language.BasicsMessage;
