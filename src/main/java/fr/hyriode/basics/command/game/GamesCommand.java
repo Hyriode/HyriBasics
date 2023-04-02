@@ -7,6 +7,7 @@ import fr.hyriode.api.game.IHyriGameType;
 import fr.hyriode.api.game.rotating.IHyriRotatingGameManager;
 import fr.hyriode.api.rank.StaffRank;
 import fr.hyriode.basics.HyriBasics;
+import fr.hyriode.hyrame.IHyrame;
 import fr.hyriode.hyrame.anvilgui.AnvilGUI;
 import fr.hyriode.hyrame.command.HyriCommand;
 import fr.hyriode.hyrame.command.HyriCommandContext;
@@ -19,6 +20,7 @@ import fr.hyriode.hyrame.item.ItemBuilder;
 import fr.hyriode.hyrame.item.ItemHead;
 import fr.hyriode.hyrame.utils.Pagination;
 import fr.hyriode.hyrame.utils.Symbols;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -124,8 +126,8 @@ public class GamesCommand extends HyriCommand<HyriBasics> {
                     .withName(ChatColor.AQUA + "Ajouter un jeu")
                     .withLore(ChatColor.GRAY + "Ajoute un jeu à la liste des", ChatColor.GRAY + "jeux présents sur le serveur.", "", ChatColor.DARK_AQUA + "Cliquer pour ajouter")
                     .build(),
-                    event -> new AnvilGUI(this.plugin, this.owner, "Nom du jeu", null, false, player -> this.open(), null, null, (player, gameName) -> {
-                        new AnvilGUI(this.plugin, this.owner, "Nom (affiché) du jeu", null, false, p -> this.open(), null, null, (p, gameDisplay) -> {
+                    event -> new AnvilGUI(this.plugin, this.owner, "Nom du jeu", null, false, player -> Bukkit.getScheduler().runTaskLater(IHyrame.get().getPlugin(), this::open, 1L), null, null, (player, gameName) -> {
+                        new AnvilGUI(this.plugin, this.owner, "Nom (affiché) du jeu", null, false, p -> Bukkit.getScheduler().runTaskLater(IHyrame.get().getPlugin(), this::open, 1L), null, null, (p, gameDisplay) -> {
                             HyriAPI.get().getGameManager().createGameInfo(gameName, gameDisplay).update();
 
                             this.owner.sendMessage(ChatColor.GREEN + "Jeu correctement ajouté.");
@@ -191,8 +193,8 @@ public class GamesCommand extends HyriCommand<HyriBasics> {
                     .withName(ChatColor.AQUA + "Ajouter un type")
                     .withLore(ChatColor.GRAY + "Ajoute un type disponible pour ce", ChatColor.GRAY + "jeu.", "", ChatColor.DARK_AQUA + "Cliquer pour ajouter")
                     .build(),
-                    event -> new AnvilGUI(this.plugin, this.owner, "Nom du type", null, false, player -> this.open(), null, null, (player, typeName) -> {
-                        new AnvilGUI(this.plugin, this.owner, "Nom (affiché) du type", null, false, p -> this.open(), null, null, (p, typeDisplay) -> {
+                    event -> new AnvilGUI(this.plugin, this.owner, "Nom du type", null, false, player -> Bukkit.getScheduler().runTaskLater(IHyrame.get().getPlugin(), this::open, 1L), null, null, (player, typeName) -> {
+                        new AnvilGUI(this.plugin, this.owner, "Nom (affiché) du type", null, false, p -> Bukkit.getScheduler().runTaskLater(IHyrame.get().getPlugin(), this::open, 1L), null, null, (p, typeDisplay) -> {
                             int higherId = -1;
                             for (IHyriGameType gameType : this.gameInfo.getTypes()) {
                                 if (higherId < gameType.getId()) {
@@ -256,7 +258,7 @@ public class GamesCommand extends HyriCommand<HyriBasics> {
                             .withName(ChatColor.AQUA + "Ajouter un jeu rotatif")
                             .withLore(ChatColor.GRAY + "Ajoute un jeu rotatif à la liste", ChatColor.GRAY + "actuelle des jeux rotatifs présents", ChatColor.GRAY + "sur le serveur.", "", ChatColor.DARK_AQUA + "Cliquer pour ajouter")
                             .build(),
-                    event -> new AnvilGUI(this.plugin, this.owner, "Nom du jeu à ajouter", null, false, player -> this.open(), null, null, (player, gameName) -> {
+                    event -> new AnvilGUI(this.plugin, this.owner, "Nom du jeu à ajouter", null, false, player -> Bukkit.getScheduler().runTaskLater(IHyrame.get().getPlugin(), this::open, 1L), null, null, (player, gameName) -> {
                         final IHyriGameManager gameManager = HyriAPI.get().getGameManager();
                         final IHyriRotatingGameManager rotatingGameManager = gameManager.getRotatingGameManager();
                         final IHyriGameInfo gameInfo = gameManager.getGameInfo(gameName);

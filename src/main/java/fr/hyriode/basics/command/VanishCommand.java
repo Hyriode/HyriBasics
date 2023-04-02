@@ -41,6 +41,10 @@ public class VanishCommand extends HyriCommand<HyriBasics> {
 
         final IHyriPlayerSession session = IHyriPlayerSession.get(player.getUniqueId());
 
+        if (session.isModerating()) {
+            return;
+        }
+
         if (session.isVanished()) {
             session.setVanished(false);
             PlayerUtil.showPlayer(player);

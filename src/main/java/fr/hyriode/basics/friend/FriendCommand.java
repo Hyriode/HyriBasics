@@ -164,7 +164,7 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
                 return;
             }
 
-            target.getFriends().sendRequest(player.getUniqueId()); // Finally, send request
+            account.getFriends().sendRequest(target.getUniqueId()); // Finally, send request
 
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_REQUEST_SENT_MESSAGE.asString(player).replace("%player%", target.getNameWithRank()))));
         };

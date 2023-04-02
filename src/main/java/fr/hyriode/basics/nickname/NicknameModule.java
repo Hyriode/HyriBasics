@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -37,7 +38,7 @@ public class NicknameModule {
     }
 
     public void processNickname(Player player, String nick, String skinOwner, Skin skin, PlayerRank rankType, boolean mojangCheck) {
-        if (!this.isNicknameAvailable(nick, mojangCheck) && !HyriAPI.get().getPlayerManager().getNicknameManager().getPlayerUsingNickname(nick).equals(player.getUniqueId())) {
+        if (!this.isNicknameAvailable(nick, mojangCheck) && !Objects.equals(HyriAPI.get().getPlayerManager().getNicknameManager().getPlayerUsingNickname(nick), player.getUniqueId())) {
             player.sendMessage(BasicsMessage.NICKNAME_PLAYER_EXISTS_MESSAGE.asString(player));
             return;
         }
