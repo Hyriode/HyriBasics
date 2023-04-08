@@ -224,7 +224,7 @@ public class PartyListener {
             final Player player = Bukkit.getPlayer(member);
 
             if (player != null) {
-                player.spigot().sendMessage(createMessage(builder -> builder.append((party.isPrivate() ? BasicsMessage.PARTY_ACCESS_PRIVATE_MESSAGE : BasicsMessage.PARTY_ACCESS_PUBLIC_MESSAGE_MESSAGE).asString(player))));
+                player.spigot().sendMessage(createMessage(builder -> builder.append((party.isPrivate() ? BasicsMessage.PARTY_ACCESS_PRIVATE_MESSAGE : BasicsMessage.PARTY_ACCESS_PUBLIC_MESSAGE).asString(player))));
             }
         }
     }
