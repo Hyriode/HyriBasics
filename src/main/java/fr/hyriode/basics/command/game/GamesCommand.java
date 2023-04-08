@@ -13,6 +13,7 @@ import fr.hyriode.hyrame.command.HyriCommand;
 import fr.hyriode.hyrame.command.HyriCommandContext;
 import fr.hyriode.hyrame.command.HyriCommandInfo;
 import fr.hyriode.hyrame.command.HyriCommandType;
+import fr.hyriode.hyrame.game.HyriGameType;
 import fr.hyriode.hyrame.inventory.pagination.PaginatedInventory;
 import fr.hyriode.hyrame.inventory.pagination.PaginatedItem;
 import fr.hyriode.hyrame.inventory.pagination.PaginationArea;
@@ -126,17 +127,17 @@ public class GamesCommand extends HyriCommand<HyriBasics> {
                     .withName(ChatColor.AQUA + "Ajouter un jeu")
                     .withLore(ChatColor.GRAY + "Ajoute un jeu à la liste des", ChatColor.GRAY + "jeux présents sur le serveur.", "", ChatColor.DARK_AQUA + "Cliquer pour ajouter")
                     .build(),
-                    event -> new AnvilGUI(this.plugin, this.owner, "Nom du jeu", null, false, player -> Bukkit.getScheduler().runTaskLater(IHyrame.get().getPlugin(), this::open, 1L), null, null, (player, gameName) -> {
-                        new AnvilGUI(this.plugin, this.owner, "Nom (affiché) du jeu", null, false, p -> Bukkit.getScheduler().runTaskLater(IHyrame.get().getPlugin(), this::open, 1L), null, null, (p, gameDisplay) -> {
-                            HyriAPI.get().getGameManager().createGameInfo(gameName, gameDisplay).update();
+                    event -> new AnvilGUI(this.plugin, this.owner, "Nom du jeu", null, false, player -> this.open(), null, null, (player, gameName) -> {
+                        new AnvilGUI(this.plugin, this.owner, "Nom (affiché) du jeu", null, false, p -> this.open(), null, null, (p, gameDisplay) -> {
+                           HyriAPI.get().getGameManager().createGameInfo(gameName, gameDisplay).update();
 
-                            this.owner.sendMessage(ChatColor.GREEN + "Jeu correctement ajouté.");
-                            this.owner.playSound(this.owner.getLocation(), Sound.LEVEL_UP, 1.0F, 1.0F);
+                           this.owner.sendMessage(ChatColor.GREEN + "Jeu correctement ajouté.");
+                           this.owner.playSound(this.owner.getLocation(), Sound.LEVEL_UP, 1.0F, 1.0F);
 
-                            new GamesGUI(this.plugin, this.owner).open();
+                           new GamesGUI(this.plugin, this.owner).open();
 
-                            return null;
-                        }).open();
+                           return null;
+                       }).open();
 
                         return null;
                     }).open());
@@ -193,8 +194,8 @@ public class GamesCommand extends HyriCommand<HyriBasics> {
                     .withName(ChatColor.AQUA + "Ajouter un type")
                     .withLore(ChatColor.GRAY + "Ajoute un type disponible pour ce", ChatColor.GRAY + "jeu.", "", ChatColor.DARK_AQUA + "Cliquer pour ajouter")
                     .build(),
-                    event -> new AnvilGUI(this.plugin, this.owner, "Nom du type", null, false, player -> Bukkit.getScheduler().runTaskLater(IHyrame.get().getPlugin(), this::open, 1L), null, null, (player, typeName) -> {
-                        new AnvilGUI(this.plugin, this.owner, "Nom (affiché) du type", null, false, p -> Bukkit.getScheduler().runTaskLater(IHyrame.get().getPlugin(), this::open, 1L), null, null, (p, typeDisplay) -> {
+                    event -> new AnvilGUI(this.plugin, this.owner, "Nom du type", null, false, player -> this.open(), null, null, (player, typeName) -> {
+                        new AnvilGUI(this.plugin, this.owner, "Nom (affiché) du type", null, false, p -> this.open(), null, null, (p, typeDisplay) -> {
                             int higherId = -1;
                             for (IHyriGameType gameType : this.gameInfo.getTypes()) {
                                 if (higherId < gameType.getId()) {

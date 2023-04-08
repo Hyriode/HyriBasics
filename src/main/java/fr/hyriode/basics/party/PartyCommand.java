@@ -150,6 +150,13 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
         this.handleArgument(ctx, "chat %sentence%", this.partyOutput(ctx, party, output -> party.sendMessage(playerId, output.get(String.class))));
 
         this.handleArgument(ctx, "mute %input%", this.partyOutput(ctx, party, output -> {
+            final HyriPartyRank playerRank = party.getRank(playerId);
+
+            if (!playerRank.canMute()) {
+                this.dontHavePermission(player);
+                return;
+            }
+
             final String mutedInput = output.get(String.class);
 
             if (!mutedInput.equalsIgnoreCase("on") && !mutedInput.equalsIgnoreCase("off")) {
@@ -160,16 +167,16 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             final boolean muted = mutedInput.equalsIgnoreCase("on");
 
             if (muted == party.isChatEnabled() && muted) {
-                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_CHAT_ALREADY_ENABLED_MESSAGE.asString(account))));
-                return;
-            }
-
-            if (muted == party.isChatEnabled() && !muted) {
                 player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_CHAT_ALREADY_DISABLED_MESSAGE.asString(account))));
                 return;
             }
 
-            party.setChatEnabled(muted);
+            if (muted == party.isChatEnabled() && !muted) {
+                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_CHAT_ALREADY_ENABLED_MESSAGE.asString(account))));
+                return;
+            }
+
+            party.setChatEnabled(!muted);
         }));
 
         this.handleArgument(ctx, "stream", this.partyOutput(ctx, party, output -> {

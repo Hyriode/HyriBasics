@@ -56,14 +56,14 @@ public class ChatCommand extends HyriCommand<HyriBasics> {
 
         this.handleArgument(ctx, "%input% %sentence%", output -> {
             final String chat = output.get(0, String.class).toUpperCase();
-            final HyriChatChannel channel = HyriChatChannel.valueOf(chat);
 
-            if (channel == null) {
+            try {
+                final HyriChatChannel channel = HyriChatChannel.valueOf(chat);
+
+                HyriAPI.get().getChatChannelManager().sendMessage(channel, playerId, output.get(1, String.class), false);
+            } catch (Exception e) {
                 player.sendMessage(BasicsMessage.COMMAND_CHAT_CHANNEL_INVALID.asString(player));
-                return;
             }
-
-            HyriAPI.get().getChatChannelManager().sendMessage(channel, playerId, output.get(1, String.class), false);
         });
     }
 }

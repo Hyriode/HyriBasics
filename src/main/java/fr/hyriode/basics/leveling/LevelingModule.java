@@ -1,7 +1,9 @@
 package fr.hyriode.basics.leveling;
 
 import fr.hyriode.api.HyriAPI;
+import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -17,10 +19,12 @@ public class LevelingModule {
     }
 
     public void onLevelUp(Player player, int oldLevel, int newLevel) {
-        player.playSound(player.getLocation(), Sound.LEVEL_UP, 2.0F, 1F);
-        player.sendMessage(BasicsMessage.LEVELING_MESSAGE.asString(player)
-                .replace("%old_level%", String.valueOf(oldLevel))
-                .replace("%new_level%", String.valueOf(newLevel)));
+        Bukkit.getScheduler().runTaskLater(HyriBasics.get(), () -> {
+            player.playSound(player.getLocation(), Sound.LEVEL_UP, 2.0F, 1F);
+            player.sendMessage(BasicsMessage.LEVELING_MESSAGE.asString(player)
+                    .replace("%old_level%", String.valueOf(oldLevel))
+                    .replace("%new_level%", String.valueOf(newLevel)));
+        }, 10L);
     }
 
 }
