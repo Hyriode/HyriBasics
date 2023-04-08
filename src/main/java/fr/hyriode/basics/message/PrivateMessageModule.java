@@ -60,14 +60,19 @@ public class PrivateMessageModule {
 
         final boolean areFriends = targetAccount.getFriends().has(senderId);
         final boolean isStaff = senderAccount.getRank().isStaff();
-        final Predicate<SettingsLevel> validate = level -> level == SettingsLevel.ALL || (level == SettingsLevel.FRIENDS && areFriends) || isStaff;
+        final Predicate<SettingsLevel> levelValidation = level -> level == SettingsLevel.ALL || (level == SettingsLevel.FRIENDS && areFriends) || isStaff;
+        final IHyriPlayerSession targetSession = IHyriPlayerSession.get(targetId);
 
-        if (validate.test(targetAccount.getSettings().getPrivateMessagesLevel())) {
-            if (validate.test(targetAccount.getSettings().getPrivateMessagesSoundLevel())) {
+        // The player has a nickname, no one (except staff members) should send a message to him
+        if (targetSession.getNickname().has() && !isStaff) {
+            sender.sendMessage(BasicsMessage.COMMAND_PRIVATE_MESSAGE_DOESNT_ACCEPT.asString(sender).replace("%player%", targetAccount.getNameWithRank()));
+            return;
+        }
+
+        if (levelValidation.test(targetAccount.getSettings().getPrivateMessagesLevel())) {
+            if (levelValidation.test(targetAccount.getSettings().getPrivateMessagesSoundLevel())) {
                 HyriSoundPacket.send(targetId, HyriSound.ORB_PICKUP, 1.0F, 1.5F);
             }
-
-            final IHyriPlayerSession targetSession = IHyriPlayerSession.get(targetId);
 
             targetSession.setPrivateMessageTarget(senderId);
             targetSession.update();

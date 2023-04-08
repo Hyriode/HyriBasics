@@ -15,6 +15,7 @@ import fr.hyriode.hyrame.utils.ThreadUtil;
 import fr.hyriode.hyrame.utils.UUIDFetcher;
 import fr.hyriode.hyrame.utils.player.ProfileLoader;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -71,14 +72,14 @@ public class NicknameModule {
     }
 
     public void applyNickname(Player player, String nickname, String textureData, String textureSignature) {
-        final GameProfile profile = PlayerUtil.setName(player, nickname);
-
-        if (textureData != null && textureSignature != null) {
-            profile.getProperties().clear();
-            profile.getProperties().put("textures", new Property("textures", textureData, textureSignature));
-        }
-
         ThreadUtil.backOnMainThread(HyriBasics.get(), () -> {
+            final GameProfile profile = PlayerUtil.setName(player, nickname);
+
+            if (textureData != null && textureSignature != null) {
+                profile.getProperties().clear();
+                profile.getProperties().put("textures", new Property("textures", textureData, textureSignature));
+            }
+
             PlayerUtil.reloadSkin(HyriBasics.get(), player);
 
             for (Player target : Bukkit.getOnlinePlayers()) {
@@ -103,13 +104,14 @@ public class NicknameModule {
         final IHyriPlayerSession session = IHyriPlayerSession.get(player.getUniqueId());
         final IHyriNickname nickname = session.getNickname();
 
+        this.applyNickname(player, IHyriPlayer.get(player.getUniqueId()).getName()); // Set player nickname to its original name
+
         nickname.setName(null);
         nickname.setSkinOwner(null);
         nickname.setSkin(null);
         nickname.setRank(null);
+        nickname.update(player.getUniqueId());
         session.update();
-
-        this.applyNickname(player, IHyriPlayer.get(player.getUniqueId()).getName()); // Set player nickname to its original name
 
         HyriAPI.get().getPlayerManager().getNicknameManager().removeUsedNickname(player.getName());
     }
