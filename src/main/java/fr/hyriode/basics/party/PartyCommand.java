@@ -167,12 +167,12 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             final boolean muted = mutedInput.equalsIgnoreCase("on");
 
             if (muted == party.isChatEnabled() && muted) {
-                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_CHAT_ALREADY_DISABLED_MESSAGE.asString(account))));
+                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_CHAT_ALREADY_ENABLED_MESSAGE.asString(account))));
                 return;
             }
 
             if (muted == party.isChatEnabled() && !muted) {
-                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_CHAT_ALREADY_ENABLED_MESSAGE.asString(account))));
+                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_CHAT_ALREADY_DISABLED_MESSAGE.asString(account))));
                 return;
             }
 
