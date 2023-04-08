@@ -221,7 +221,7 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
 
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_DENY_TARGET_MESSAGE.asString(account).replace("%player%", requester.getNameWithRank()))));
 
-            for (UUID member : party.getMembers().keySet()) {
+            for (UUID member : requesterParty.getMembers().keySet()) {
                 PlayerUtil.sendComponent(member, createMessage(builder -> builder.append(BasicsMessage.PARTY_DENY_SENDER_MESSAGE.asString(IHyriPlayer.get(member)).replace("%player%", account.getNameWithRank()))));
             }
         });
