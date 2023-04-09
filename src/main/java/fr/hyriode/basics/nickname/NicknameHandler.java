@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 /**
@@ -20,12 +21,26 @@ public class NicknameHandler implements Listener {
 
     public NicknameHandler(NicknameModule nicknameModule) {
         this.nicknameModule = nicknameModule;
-
-        HyriAPI.get().getEventBus().register(this);
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onLogin(PlayerLoginEvent event) {
+        final Player player = event.getPlayer();
+        final IHyriPlayerSession session = IHyriPlayerSession.get(player.getUniqueId());
+
+        if (session == null) {
+            return;
+        }
+
+        final IHyriNickname nickname = session.getNickname();
+
+        if (nickname.has()) {
+            ThreadUtil.ASYNC_EXECUTOR.execute(() -> this.nicknameModule.applyNickname(player, nickname.getName(), nickname.getSkin()));
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         final IHyriPlayerSession session = IHyriPlayerSession.get(player.getUniqueId());
 

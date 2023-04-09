@@ -73,7 +73,7 @@
   "friend.accept.message": "%player% &fest désormais votre ami.",
   "friend.no-longer.message": "%player% &fn'est plus votre ami.",
   "friend.deny-sender.message": "%player% &fa &crefusé &fvotre demande d'ami.",
-  "friend.deny-target.message": "&fVous avez &créfusé &fla demande d'ami de %player%&f.",
+  "friend.deny-target.message": "&fVous avez &crefusé &fla demande d'ami de %player%&f.",
   "friend.list-player.message": "%player% &fest sur &d%server%",
   "friend.list-player-offline.message": "%player% &cest hors-ligne",
   "friend.limit.message": "&cVous avez déjà atteint la limite d'amis (%limit%)!",
