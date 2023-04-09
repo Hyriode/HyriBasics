@@ -72,21 +72,19 @@ public class NicknameModule {
     }
 
     public void applyNickname(Player player, String nickname, String textureData, String textureSignature) {
-        ThreadUtil.backOnMainThread(HyriBasics.get(), () -> {
-            final GameProfile profile = PlayerUtil.setName(player, nickname);
+        final GameProfile profile = PlayerUtil.setName(player, nickname);
 
-            if (textureData != null && textureSignature != null) {
-                profile.getProperties().clear();
-                profile.getProperties().put("textures", new Property("textures", textureData, textureSignature));
-            }
+        if (textureData != null && textureSignature != null) {
+            profile.getProperties().clear();
+            profile.getProperties().put("textures", new Property("textures", textureData, textureSignature));
+        }
 
-            PlayerUtil.reloadSkin(HyriBasics.get(), player);
+        PlayerUtil.reloadSkin(HyriBasics.get(), player);
 
-            for (Player target : Bukkit.getOnlinePlayers()) {
-                target.hidePlayer(player);
-                target.showPlayer(player);
-            }
-        });
+        for (Player target : Bukkit.getOnlinePlayers()) {
+            target.hidePlayer(player);
+            target.showPlayer(player);
+        }
     }
 
     public void applyNickname(Player player, String nickname, @NotNull Skin skin) {

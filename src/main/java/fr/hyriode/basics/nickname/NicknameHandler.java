@@ -1,15 +1,15 @@
 package fr.hyriode.basics.nickname;
 
-import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.player.IHyriPlayerSession;
 import fr.hyriode.api.player.model.IHyriNickname;
+import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.hyrame.utils.ThreadUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 
 /**
  * Created by AstFaster
@@ -24,22 +24,6 @@ public class NicknameHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onLogin(PlayerLoginEvent event) {
-        final Player player = event.getPlayer();
-        final IHyriPlayerSession session = IHyriPlayerSession.get(player.getUniqueId());
-
-        if (session == null) {
-            return;
-        }
-
-        final IHyriNickname nickname = session.getNickname();
-
-        if (nickname.has()) {
-            ThreadUtil.ASYNC_EXECUTOR.execute(() -> this.nicknameModule.applyNickname(player, nickname.getName(), nickname.getSkin()));
-        }
-    }
-
-    @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         final IHyriPlayerSession session = IHyriPlayerSession.get(player.getUniqueId());
@@ -51,7 +35,7 @@ public class NicknameHandler implements Listener {
         final IHyriNickname nickname = session.getNickname();
 
         if (nickname.has()) {
-            ThreadUtil.ASYNC_EXECUTOR.execute(() -> this.nicknameModule.applyNickname(player, nickname.getName(), nickname.getSkin()));
+            this.nicknameModule.applyNickname(player, nickname.getName(), nickname.getSkin());
         }
     }
 

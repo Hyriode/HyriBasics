@@ -2,6 +2,7 @@ package fr.hyriode.basics.nickname;
 
 import fr.hyriode.api.rank.PlayerRank;
 import fr.hyriode.api.util.Skin;
+import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
 import fr.hyriode.basics.util.BasicsHead;
 import fr.hyriode.basics.util.GUIDesign;
@@ -66,7 +67,8 @@ public class NicknameGUI extends HyriInventory {
                     this.currentSkin = this.nicknameModule.getLoader().getRandomSkin();
                 }
 
-                this.nicknameModule.processNickname(this.owner, this.currentNickname, this.currentSkinOwner, this.currentSkin, this.currentRank, !this.randomNickname);
+                ThreadUtil.backOnMainThread(HyriBasics.get(), () -> this.nicknameModule.processNickname(this.owner, this.currentNickname, this.currentSkinOwner, this.currentSkin, this.currentRank, !this.randomNickname));
+
                 this.owner.closeInventory();
             });
         });
