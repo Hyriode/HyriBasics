@@ -94,7 +94,7 @@ public class NicknameModule {
     }
 
     public void applyNickname(Player player, String nickname) {
-        final GameProfile profile = new ProfileLoader(nickname, ProfileLoader.REDIS_KEY).loadProfile();
+        final GameProfile profile = new ProfileLoader(nickname).loadProfile();
         final Property textures = profile.getProperties().get("textures").iterator().next();
 
         this.applyNickname(player, nickname, textures.getValue(), textures.getSignature());
@@ -123,7 +123,7 @@ public class NicknameModule {
     }
 
     public Skin getPlayerSkin(String player) {
-        final GameProfile skinProfile = new ProfileLoader(player, ProfileLoader.REDIS_KEY).loadProfile();
+        final GameProfile skinProfile = new ProfileLoader(player).loadProfile();
         final Iterator<Property> properties = skinProfile.getProperties().get("textures").iterator();
 
         if (!properties.hasNext()) {
