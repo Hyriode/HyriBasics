@@ -27,8 +27,7 @@ public class NicknameCommand extends HyriCommand<HyriBasics> {
                 .withDescription("The command used to edit profile name, skin, etc.")
                 .withType(HyriCommandType.PLAYER)
                 .withPermission(account -> account.getHyriPlus().has()) // Handle staff, Hyri+ and Partners
-                .withUsage("/nick [custom|reset]")
-                .asynchronous());
+                .withUsage("/nick [custom|reset]"));
     }
 
     @Override
@@ -52,13 +51,11 @@ public class NicknameCommand extends HyriCommand<HyriBasics> {
 
         this.handleArgument(ctx, "custom", output -> {
             if (account.getRank().is(PlayerRank.PARTNER)) {
-                ThreadUtil.backOnMainThread(HyriBasics.get(), () -> { // Get back on server thread to open the GUI
-                    if (currentNickname.has()) {
-                        new NicknameGUI(player, nicknameModule, currentNickname.getName(), currentNickname.getSkinOwner(), currentNickname.getSkin(), currentNickname.getRank()).open();
-                    } else {
-                        new NicknameGUI(player, nicknameModule, null, nicknameModule.getLoader().getRandomSkin(), PlayerRank.PLAYER).open();
-                    }
-                });
+                if (currentNickname.has()) {
+                    new NicknameGUI(player, nicknameModule, currentNickname.getName(), currentNickname.getSkinOwner(), currentNickname.getSkin(), currentNickname.getRank()).open();
+                } else {
+                    new NicknameGUI(player, nicknameModule, null, nicknameModule.getLoader().getRandomSkin(), PlayerRank.PLAYER).open();
+                }
             } else {
                 player.sendMessage(HyrameMessage.PERMISSION_ERROR.asString(account));
             }
