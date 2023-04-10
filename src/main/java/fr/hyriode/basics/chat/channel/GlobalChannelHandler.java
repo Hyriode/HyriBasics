@@ -35,7 +35,7 @@ public class GlobalChannelHandler implements IHyriChatChannelHandler {
             }
 
             if (senderSession.getNickname().has()) {
-                player.sendMessage(senderSession.getNameWithRank() + ChatColor.WHITE + ": " + (senderSession.getNickname().getRank() == PlayerRank.PLAYER ? ChatColor.GRAY : ChatColor.WHITE) + message);
+                player.sendMessage(senderSession.getNameWithRank() + (senderSession.getNickname().getRank() == PlayerRank.PLAYER ? ChatColor.GRAY : ChatColor.WHITE) + ": " + message);
             } else {
                 player.sendMessage(senderSession.getNameWithRank() + (senderAccount.getRank().isDefault() ? ChatColor.GRAY : ChatColor.WHITE) + ": " + message);
             }
