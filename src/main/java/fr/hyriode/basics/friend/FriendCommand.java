@@ -13,6 +13,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -191,7 +192,7 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
             showingFriends.add(new ListedFriend(friendAccount, IHyriPlayerSession.get(playerId)));
         }
 
-        showingFriends.sort(Comparator.comparing(friend -> friend.getSession() != null));
+        showingFriends.sort(Comparator.comparing(friend -> friend.getSession() == null));
 
         player.spigot().sendMessage(createMessage(builder -> {
             for (ListedFriend friend : showingFriends.getPageContent(page)) {

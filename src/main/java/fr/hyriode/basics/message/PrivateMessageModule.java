@@ -1,13 +1,13 @@
 package fr.hyriode.basics.message;
 
 import fr.hyriode.api.HyriAPI;
+import fr.hyriode.api.chat.PrivateMessageEvent;
 import fr.hyriode.api.player.IHyriPlayer;
 import fr.hyriode.api.player.IHyriPlayerSession;
 import fr.hyriode.api.player.model.SettingsLevel;
 import fr.hyriode.api.sound.HyriSound;
 import fr.hyriode.api.sound.HyriSoundPacket;
 import fr.hyriode.basics.language.BasicsMessage;
-import fr.hyriode.hyrame.chat.event.PrivateMessageEvent;
 import fr.hyriode.hyrame.utils.PlayerUtil;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
@@ -50,7 +50,7 @@ public class PrivateMessageModule {
             return;
         }
 
-        final PrivateMessageEvent event = new PrivateMessageEvent(senderId, targetId);
+        final PrivateMessageEvent event = new PrivateMessageEvent(senderId, targetId, message);
 
         HyriAPI.get().getEventBus().publish(event);
 

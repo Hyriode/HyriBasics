@@ -28,30 +28,29 @@ public class ChatCommand extends HyriCommand<HyriBasics> {
         final UUID playerId = player.getUniqueId();
 
         this.handleArgument(ctx, "set %input%", output -> {
-            final String chat = output.get(String.class).toUpperCase();
-            final HyriChatChannel channel = HyriChatChannel.valueOf(chat);
+            try {
+                final String chat = output.get(String.class).toUpperCase();
+                final HyriChatChannel channel = HyriChatChannel.valueOf(chat);
 
-            if (channel == null) {
+                final IHyriPlayer account = IHyriPlayer.get(playerId);
+
+                if (!channel.hasAccess(account)) {
+                    player.sendMessage(BasicsMessage.COMMAND_CHAT_CHANNEL_CANT_JOIN.asString(account));
+                    return;
+                }
+
+                if (account.getSettings().getChatChannel().equals(channel)) {
+                    player.sendMessage(BasicsMessage.COMMAND_CHAT_CHANNEL_ALREADY_IN.asString(account));
+                    return;
+                }
+
+                player.sendMessage(BasicsMessage.COMMAND_CHAT_CHANNEL_NOW_TALKING.asString(account).replace("%channel%", channel.name()));
+
+                account.getSettings().setChatChannel(channel);
+                account.update();
+            } catch (Exception e) {
                 player.sendMessage(BasicsMessage.COMMAND_CHAT_CHANNEL_INVALID.asString(player));
-                return;
             }
-
-            final IHyriPlayer account = IHyriPlayer.get(playerId);
-
-            if (!channel.hasAccess(account)) {
-                player.sendMessage(BasicsMessage.COMMAND_CHAT_CHANNEL_CANT_JOIN.asString(account));
-                return;
-            }
-
-            if (account.getSettings().getChatChannel().equals(channel)) {
-                player.sendMessage(BasicsMessage.COMMAND_CHAT_CHANNEL_ALREADY_IN.asString(account));
-                return;
-            }
-
-            player.sendMessage(BasicsMessage.COMMAND_CHAT_CHANNEL_NOW_TALKING.asString(account).replace("%channel%", channel.name()));
-
-            account.getSettings().setChatChannel(channel);
-            account.update();
         });
 
         this.handleArgument(ctx, "%input% %sentence%", output -> {
