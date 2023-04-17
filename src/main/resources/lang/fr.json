@@ -55,6 +55,7 @@
   "command.help.party": "Crée un groupe et gère le",
   "command.help.lobby": "Retourne au lobby",
   "command.help.report": "Signale un joueur aux membres du staff",
+  "command.help.map": "Affiche les informations de la carte",
 
   "command.friend.add.description": "Ajoute un joueur à votre liste d'amis",
   "command.friend.remove.description": "Enlève un joueur de votre liste d'amis",

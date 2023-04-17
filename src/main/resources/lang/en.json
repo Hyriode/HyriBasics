@@ -55,6 +55,7 @@
   "command.help.party": "Create your own party and manage it",
   "command.help.lobby": "Go back to the lobby",
   "command.help.report": "Report a player to the staff",
+  "command.help.map": "Display the information of the map",
 
   "command.friend.add.description": "Add a player in your friends",
   "command.friend.remove.description": "Remove a player from your friends",

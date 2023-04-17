@@ -40,6 +40,7 @@ public class HelpCommand extends HyriCommand<HyriBasics> {
                 .append(this.getCommandLine(player, "party")).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party"))
                 .append(this.getCommandLine(player, "lobby")).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/lobby"))
                 .append(this.getCommandLine(player, "report")).event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/report "))
+                .append(this.getCommandLine(player, "map")).event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/map"))
                 .append("\n")
                 .event((ClickEvent) null)
                 .append(Symbols.HYPHENS_LINE).color(ChatColor.DARK_AQUA).strikethrough(true);

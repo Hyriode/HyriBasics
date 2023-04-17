@@ -1,6 +1,7 @@
 package fr.hyriode.basics.announcement;
 
 import fr.hyriode.api.event.HyriEventHandler;
+import fr.hyriode.api.server.event.LobbyRestartingEvent;
 import fr.hyriode.basics.language.BasicsMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
