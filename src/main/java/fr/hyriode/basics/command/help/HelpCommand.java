@@ -2,10 +2,10 @@ package fr.hyriode.basics.command.help;
 
 import fr.hyriode.api.language.HyriLanguageMessage;
 import fr.hyriode.basics.HyriBasics;
+import fr.hyriode.hyrame.command.CommandContext;
+import fr.hyriode.hyrame.command.CommandInfo;
+import fr.hyriode.hyrame.command.CommandUsage;
 import fr.hyriode.hyrame.command.HyriCommand;
-import fr.hyriode.hyrame.command.HyriCommandContext;
-import fr.hyriode.hyrame.command.HyriCommandInfo;
-import fr.hyriode.hyrame.command.HyriCommandType;
 import fr.hyriode.hyrame.utils.Symbols;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -20,16 +20,15 @@ import org.bukkit.entity.Player;
 public class HelpCommand extends HyriCommand<HyriBasics> {
 
     public HelpCommand(HyriBasics plugin) {
-        super(plugin, new HyriCommandInfo("help")
+        super(plugin, new CommandInfo("help")
                 .withAliases("?", "aide")
-                .withType(HyriCommandType.PLAYER)
                 .withDescription("Command used to help you")
-                .withUsage("/help"));
+                .withUsage(new CommandUsage().withStringMessage(player -> "/help")));
     }
 
     @Override
-    public void handle(HyriCommandContext ctx) {
-        final Player player = (Player) ctx.getSender();
+    public void handle(CommandContext ctx) {
+        final Player player = ctx.getSender();
 
         final ComponentBuilder builder = new ComponentBuilder(Symbols.HYPHENS_LINE).color(ChatColor.DARK_AQUA).strikethrough(true)
                 .append("\n\n").strikethrough(false)

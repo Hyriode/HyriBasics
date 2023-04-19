@@ -4,10 +4,10 @@ import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.party.IHyriParty;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
+import fr.hyriode.hyrame.command.CommandContext;
+import fr.hyriode.hyrame.command.CommandInfo;
+import fr.hyriode.hyrame.command.CommandUsage;
 import fr.hyriode.hyrame.command.HyriCommand;
-import fr.hyriode.hyrame.command.HyriCommandContext;
-import fr.hyriode.hyrame.command.HyriCommandInfo;
-import fr.hyriode.hyrame.command.HyriCommandType;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -19,16 +19,15 @@ import java.util.UUID;
 public class PartyChatCommand extends HyriCommand<HyriBasics> {
 
     public PartyChatCommand(HyriBasics plugin) {
-        super(plugin, new HyriCommandInfo("partychat")
+        super(plugin, new CommandInfo("partychat")
                 .withAliases("pc")
                 .withDescription("The command used to send a message in party chat")
-                .withType(HyriCommandType.PLAYER)
-                .withUsage("/pc <message>"));
+                .withUsage(new CommandUsage().withStringMessage(player -> "/pc <message>")));
     }
 
     @Override
-    public void handle(HyriCommandContext ctx) {
-        final Player player = (Player) ctx.getSender();
+    public void handle(CommandContext ctx) {
+        final Player player = ctx.getSender();
         final UUID playerId = player.getUniqueId();
         final IHyriParty party = HyriAPI.get().getPartyManager().getPlayerParty(playerId);
 
@@ -37,7 +36,9 @@ public class PartyChatCommand extends HyriCommand<HyriBasics> {
             return;
         }
 
-        this.handleArgument(ctx, "%sentence%", output -> party.sendMessage(playerId, output.get(String.class)));
+        ctx.registerArgument("%sentence%", output -> party.sendMessage(playerId, output.get(String.class)));
+
+        super.handle(ctx);
     }
 
 }

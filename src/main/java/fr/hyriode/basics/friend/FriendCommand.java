@@ -13,7 +13,6 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -37,22 +36,21 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
             .create();
 
     public FriendCommand(HyriBasics plugin) {
-        super(plugin, new HyriCommandInfo("friend")
+        super(plugin, new CommandInfo("friend")
                 .withAliases("f", "ami", "friends", "amis")
                 .withDescription("The command used to manage friends")
-                .withType(HyriCommandType.PLAYER)
-                .withUsage(sender -> HELP.apply((Player) sender), false));
+                .withUsage(new CommandUsage(HELP, false)));
     }
 
     @Override
-    public void handle(HyriCommandContext ctx) {
-        final Player player = (Player) ctx.getSender();
+    public void handle(CommandContext ctx) {
+        final Player player = ctx.getSender();
         final UUID playerId = player.getUniqueId();
         final IHyriPlayer account = IHyriPlayer.get(playerId);
         final FriendModule friendModule = HyriBasics.get().getFriendModule();
         final IHyriFriendsModule friends = account.getFriends();
 
-        this.handleArgument(ctx, "accept %player%", output -> {
+        ctx.registerArgument("accept %player%", output -> {
             final IHyriPlayer sender = output.get(IHyriPlayer.class);
 
             if (!friendModule.hasRequest(player, friends, sender)) {
@@ -85,7 +83,7 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_ACCEPT_MESSAGE.asString(account).replace("%player%", sender.getNameWithRank())))); // Send the message to the request receiver
         });
 
-        this.handleArgument(ctx, "deny %player%", output -> {
+        ctx.registerArgument("deny %player%", output -> {
             final IHyriPlayer sender = output.get(IHyriPlayer.class);
 
             if (!friendModule.hasRequest(player, friends, sender)) {
@@ -98,7 +96,7 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_DENY_TARGET_MESSAGE.asString(account).replace("%player%", sender.getNameWithRank())))); // Send the message to the request receiver
         });
 
-        this.handleArgument(ctx, "remove %player%", output -> {
+        ctx.registerArgument("remove %player%", output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
 
             if (friendModule.areNotFriends(friends, player, target)) { // Check whether they are not friends
@@ -115,14 +113,16 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_NO_LONGER_MESSAGE.asString(account).replace("%player%", target.getNameWithRank())))); // Send message to the player
         });
 
-        this.handleArgument(ctx, "list %integer%", output -> this.listFriends(output.get(Integer.class), player, account, friends));
-        this.handleArgument(ctx, "list", output -> this.listFriends(0, player, account, friends));
-        this.handleArgument(ctx, "help", output -> player.spigot().sendMessage(HELP.apply(player)));
-        this.handleArgument(ctx, "%player_online%", this.addFriend(player, account, friends));
-        this.handleArgument(ctx, "add %player_online%", this.addFriend(player, account, friends));
+        ctx.registerArgument("list %integer%", output -> this.listFriends(output.get(Integer.class), player, account, friends));
+        ctx.registerArgument("list", output -> this.listFriends(0, player, account, friends));
+        ctx.registerArgument("help", output -> player.spigot().sendMessage(HELP.apply(player)));
+        ctx.registerArgument("%player_online%", this.addFriend(player, account, friends));
+        ctx.registerArgument("add %player_online%", this.addFriend(player, account, friends));
+
+        super.handle(ctx);
     }
 
-    private Consumer<HyriCommandOutput> addFriend(Player player, IHyriPlayer account, IHyriFriendsModule friends) {
+    private Consumer<CommandOutput> addFriend(Player player, IHyriPlayer account, IHyriFriendsModule friends) {
         return output -> {
             final UUID playerId = player.getUniqueId();
             final IHyriPlayer target = output.get(IHyriPlayer.class);

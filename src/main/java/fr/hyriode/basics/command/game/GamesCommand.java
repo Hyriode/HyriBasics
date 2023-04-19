@@ -9,11 +9,10 @@ import fr.hyriode.api.rank.StaffRank;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.hyrame.IHyrame;
 import fr.hyriode.hyrame.anvilgui.AnvilGUI;
+import fr.hyriode.hyrame.command.CommandContext;
+import fr.hyriode.hyrame.command.CommandInfo;
+import fr.hyriode.hyrame.command.CommandUsage;
 import fr.hyriode.hyrame.command.HyriCommand;
-import fr.hyriode.hyrame.command.HyriCommandContext;
-import fr.hyriode.hyrame.command.HyriCommandInfo;
-import fr.hyriode.hyrame.command.HyriCommandType;
-import fr.hyriode.hyrame.game.HyriGameType;
 import fr.hyriode.hyrame.inventory.pagination.PaginatedInventory;
 import fr.hyriode.hyrame.inventory.pagination.PaginatedItem;
 import fr.hyriode.hyrame.inventory.pagination.PaginationArea;
@@ -42,17 +41,15 @@ import java.util.stream.Collectors;
 public class GamesCommand extends HyriCommand<HyriBasics> {
 
     public GamesCommand(HyriBasics plugin) {
-        super(plugin, new HyriCommandInfo("games")
-                .withType(HyriCommandType.ALL)
-                .withUsage("/games")
+        super(plugin, new CommandInfo("games")
+                .withUsage(new CommandUsage().withStringMessage(player -> "/games"))
                 .withPermission(player -> player.getRank().isSuperior(StaffRank.ADMINISTRATOR))
-                .withDescription("Command used to interact with games.")
-                .withType(HyriCommandType.PLAYER));
+                .withDescription("Command used to interact with games."));
     }
 
     @Override
-    public void handle(HyriCommandContext ctx) {
-        new GamesGUI(this.plugin, (Player) ctx.getSender()).open();
+    public void handle(CommandContext ctx) {
+        new GamesGUI(this.plugin, ctx.getSender()).open();
     }
 
     private static abstract class GUI extends PaginatedInventory {

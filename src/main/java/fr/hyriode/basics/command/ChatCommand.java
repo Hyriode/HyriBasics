@@ -5,10 +5,10 @@ import fr.hyriode.api.chat.channel.HyriChatChannel;
 import fr.hyriode.api.player.IHyriPlayer;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
+import fr.hyriode.hyrame.command.CommandContext;
+import fr.hyriode.hyrame.command.CommandInfo;
+import fr.hyriode.hyrame.command.CommandUsage;
 import fr.hyriode.hyrame.command.HyriCommand;
-import fr.hyriode.hyrame.command.HyriCommandContext;
-import fr.hyriode.hyrame.command.HyriCommandInfo;
-import fr.hyriode.hyrame.command.HyriCommandType;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -16,18 +16,17 @@ import java.util.UUID;
 public class ChatCommand extends HyriCommand<HyriBasics> {
 
     public ChatCommand(HyriBasics plugin) {
-        super(plugin, new HyriCommandInfo("chat")
+        super(plugin, new CommandInfo("chat")
                 .withDescription("Change your current chat, or send a message to the specified chat")
-                .withUsage("/chat set <chat> | /chat <chat> <message>")
-                .withType(HyriCommandType.PLAYER));
+                .withUsage(new CommandUsage().withStringMessage(player -> "/chat set <chat> | /chat <chat> <message>")));
     }
 
     @Override
-    public void handle(HyriCommandContext ctx) {
-        final Player player = (Player) ctx.getSender();
+    public void handle(CommandContext ctx) {
+        final Player player = ctx.getSender();
         final UUID playerId = player.getUniqueId();
 
-        this.handleArgument(ctx, "set %input%", output -> {
+        ctx.registerArgument("set %input%", output -> {
             try {
                 final String chat = output.get(String.class).toUpperCase();
                 final HyriChatChannel channel = HyriChatChannel.valueOf(chat);
@@ -53,7 +52,7 @@ public class ChatCommand extends HyriCommand<HyriBasics> {
             }
         });
 
-        this.handleArgument(ctx, "%input% %sentence%", output -> {
+        ctx.registerArgument("%input% %sentence%", output -> {
             final String chat = output.get(0, String.class).toUpperCase();
 
             try {
@@ -64,5 +63,7 @@ public class ChatCommand extends HyriCommand<HyriBasics> {
                 player.sendMessage(BasicsMessage.COMMAND_CHAT_CHANNEL_INVALID.asString(player));
             }
         });
+
+        super.handle(ctx);
     }
 }

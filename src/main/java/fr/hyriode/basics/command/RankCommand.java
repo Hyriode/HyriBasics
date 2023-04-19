@@ -1,16 +1,24 @@
 package fr.hyriode.basics.command;
 
+import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.player.IHyriPlayer;
+import fr.hyriode.api.player.event.RankUpdatedEvent;
+import fr.hyriode.api.player.model.IHyriPlus;
+import fr.hyriode.api.player.transaction.HyriPlusTransaction;
 import fr.hyriode.api.rank.PlayerRank;
 import fr.hyriode.api.rank.StaffRank;
 import fr.hyriode.basics.HyriBasics;
+import fr.hyriode.hyrame.command.CommandContext;
+import fr.hyriode.hyrame.command.CommandInfo;
+import fr.hyriode.hyrame.command.CommandUsage;
 import fr.hyriode.hyrame.command.HyriCommand;
-import fr.hyriode.hyrame.command.HyriCommandContext;
-import fr.hyriode.hyrame.command.HyriCommandInfo;
-import fr.hyriode.hyrame.command.HyriCommandType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 /**
@@ -21,26 +29,19 @@ import java.util.UUID;
 public class RankCommand extends HyriCommand<HyriBasics> {
 
     public RankCommand(HyriBasics plugin) {
-        super(plugin, new HyriCommandInfo("rank")
+        super(plugin, new CommandInfo("rank")
                 .withDescription("Rank command")
-                .withType(HyriCommandType.PLAYER)
-                .withUsage("/rank")
+                .withUsage(new CommandUsage().withStringMessage(player -> "/rank"))
                 .asynchronous()
                 .withPermission(player -> player.getRank().is(StaffRank.ADMINISTRATOR)));
     }
 
     @Override
-    public void handle(HyriCommandContext ctx) {
-        final Player player = (Player) ctx.getSender();
+    public void handle(CommandContext ctx) {
+        final Player player = ctx.getSender();
 
-        this.handleArgument(ctx, "player %player% %input%", output -> {
+        ctx.registerArgument("player %player% %input%", target -> TextComponent.fromLegacyText("staff <player> <rank>"), output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
-            final UUID targetId = target.getUniqueId();
-
-            if (player.getUniqueId().equals(targetId)) {
-                return;
-            }
-
             final PlayerRank rankType = this.getPlayerByName(output.get(String.class));
 
             if (rankType != null) {
@@ -53,12 +54,8 @@ public class RankCommand extends HyriCommand<HyriBasics> {
             }
         });
 
-        this.handleArgument(ctx, "staff %player% reset", output -> {
+        ctx.registerArgument("staff %player% reset", target -> TextComponent.fromLegacyText("staff <player> reset"), output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
-
-            if (player.getUniqueId().equals(target.getUniqueId())) {
-                return;
-            }
 
             target.getRank().setStaffType(null);
             target.update();
@@ -66,13 +63,8 @@ public class RankCommand extends HyriCommand<HyriBasics> {
             player.sendMessage(ChatColor.GREEN + "Grade staff reset!");
         });
 
-        this.handleArgument(ctx, "staff %player% %input%", output -> {
+        ctx.registerArgument("staff %player% %input%", target -> TextComponent.fromLegacyText("staff <player> <rank>"), output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
-
-            if (player.getUniqueId().equals(target.getUniqueId())) {
-                return;
-            }
-
             final StaffRank rankType = this.getStaffByName(output.get(String.class));
 
             if (rankType != null) {
@@ -84,6 +76,28 @@ public class RankCommand extends HyriCommand<HyriBasics> {
                 player.sendMessage(ChatColor.RED + "Grade staff invalide!");
             }
         });
+
+        ctx.registerArgument("hyri+ %player% %long%", target -> TextComponent.fromLegacyText("hyri+ <player> <days>"), output -> {
+            final IHyriPlayer target = output.get(IHyriPlayer.class);
+            final long days = output.get(Long.class);
+            final IHyriPlus hyriPlus = target.getHyriPlus();
+            final boolean expired = hyriPlus.hasExpire();
+            final long duration = days * 24 * 3600;
+
+            hyriPlus.setDuration(hyriPlus.getDuration() + duration);
+
+            if (expired) {
+                hyriPlus.enable();
+            }
+
+            target.getTransactions().add(HyriPlusTransaction.TRANSACTIONS_TYPE, new HyriPlusTransaction(duration));
+
+            HyriAPI.get().getEventBus().publish(new RankUpdatedEvent(target.getUniqueId()));
+
+            player.sendMessage(ChatColor.GREEN + "Hyri+ modifié!");
+        });
+
+        super.handle(ctx);
     }
 
     private StaffRank getStaffByName(String name) {

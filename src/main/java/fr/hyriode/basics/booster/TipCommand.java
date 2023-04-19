@@ -6,10 +6,10 @@ import fr.hyriode.api.booster.IHyriBoosterManager;
 import fr.hyriode.api.player.IHyriPlayer;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
+import fr.hyriode.hyrame.command.CommandContext;
+import fr.hyriode.hyrame.command.CommandInfo;
+import fr.hyriode.hyrame.command.CommandUsage;
 import fr.hyriode.hyrame.command.HyriCommand;
-import fr.hyriode.hyrame.command.HyriCommandContext;
-import fr.hyriode.hyrame.command.HyriCommandInfo;
-import fr.hyriode.hyrame.command.HyriCommandType;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -24,16 +24,15 @@ import java.util.UUID;
 public class TipCommand extends HyriCommand<HyriBasics> {
 
     public TipCommand(HyriBasics plugin) {
-        super(plugin, new HyriCommandInfo("tip")
+        super(plugin, new CommandInfo("tip")
                 .withAliases("merci", "thank", "thanks")
-                .withType(HyriCommandType.PLAYER)
-                .withUsage("/tip")
+                .withUsage(new CommandUsage().withStringMessage(player -> "/tip"))
                 .withDescription("Thank all the players that applied a booster on the network."));
     }
 
     @Override
-    public void handle(HyriCommandContext ctx) {
-        final Player player = (Player) ctx.getSender();
+    public void handle(CommandContext ctx) {
+        final Player player = ctx.getSender();
         final IHyriPlayer account = IHyriPlayer.get(player.getUniqueId());
         final IHyriBoosterManager boosterManager = HyriAPI.get().getBoosterManager();
         final List<IHyriBooster> boosters = new ArrayList<>();

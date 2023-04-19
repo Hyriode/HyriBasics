@@ -16,12 +16,12 @@ import org.bukkit.entity.Player;
  * Created by AstFaster
  * on 21/04/2022 at 14:35
  */
-public class MaintenanceCommand extends HyriCommand<HyriBasics> {
+public class SlotsCommand extends HyriCommand<HyriBasics> {
 
-    public MaintenanceCommand(HyriBasics plugin) {
-        super(plugin, new CommandInfo("maintenance")
-                .withDescription("The command used to enable/disable maintenance.")
-                .withUsage(new CommandUsage().withStringMessage(player -> "/maintenance <on|off>"))
+    public SlotsCommand(HyriBasics plugin) {
+        super(plugin, new CommandInfo("slots")
+                .withDescription("Edit network maximum slots")
+                .withUsage(new CommandUsage().withStringMessage(player -> "/slots <amount>"))
                 .withPermission(player -> player.getRank().is(StaffRank.ADMINISTRATOR)));
     }
 
@@ -29,22 +29,15 @@ public class MaintenanceCommand extends HyriCommand<HyriBasics> {
     public void handle(CommandContext ctx) {
         final Player player = ctx.getSender();
 
-        ctx.registerArgument("on", output -> {
+        ctx.registerArgument("%integer%", output -> {
+            final int slots = output.get(Integer.class);
             final IHyriNetwork network = HyriAPI.get().getNetworkManager().getNetwork();
 
-            network.getMaintenance().enable(player.getUniqueId(), null);
+            network.setSlots(slots);
             network.update();
 
-            player.sendMessage(BasicsMessage.COMMAND_MAINTENANCE_ON.asString(player));
-        });
-
-        ctx.registerArgument("off", output -> {
-            final IHyriNetwork network = HyriAPI.get().getNetworkManager().getNetwork();
-
-            network.getMaintenance().disable();
-            network.update();
-
-            player.sendMessage(BasicsMessage.COMMAND_MAINTENANCE_OFF.asString(player));
+            player.sendMessage(BasicsMessage.COMMAND_SLOTS_EDIT.asString(player)
+                    .replace("%slots%", String.valueOf(slots)));
         });
 
         super.handle(ctx);

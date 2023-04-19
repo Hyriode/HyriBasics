@@ -33,6 +33,8 @@ public enum BasicsMessage {
     COMMAND_MAINTENANCE_ON("command.maintenance.on"),
     COMMAND_MAINTENANCE_OFF("command.maintenance.off"),
 
+    COMMAND_SLOTS_EDIT("command.slots-edit"),
+
     COMMAND_WHITELIST_ALREADY_IN("command.whitelist.already-in"),
     COMMAND_WHITELIST_ADDED("command.whitelist.added"),
 

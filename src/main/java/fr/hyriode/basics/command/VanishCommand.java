@@ -5,10 +5,10 @@ import fr.hyriode.api.player.IHyriPlayerSession;
 import fr.hyriode.api.rank.PlayerRank;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
+import fr.hyriode.hyrame.command.CommandContext;
+import fr.hyriode.hyrame.command.CommandInfo;
+import fr.hyriode.hyrame.command.CommandUsage;
 import fr.hyriode.hyrame.command.HyriCommand;
-import fr.hyriode.hyrame.command.HyriCommandContext;
-import fr.hyriode.hyrame.command.HyriCommandInfo;
-import fr.hyriode.hyrame.command.HyriCommandType;
 import fr.hyriode.hyrame.game.HyriGame;
 import fr.hyriode.hyrame.utils.PlayerUtil;
 import org.bukkit.entity.Player;
@@ -21,16 +21,15 @@ import org.bukkit.entity.Player;
 public class VanishCommand extends HyriCommand<HyriBasics> {
 
     public VanishCommand(HyriBasics plugin) {
-        super(plugin, new HyriCommandInfo("vanish")
+        super(plugin, new CommandInfo("vanish")
                 .withDescription("The command used to vanish yourself from other players")
-                .withType(HyriCommandType.PLAYER)
-                .withUsage("/vanish")
+                .withUsage(new CommandUsage().withStringMessage(player -> "/vanish"))
                 .withPermission(player -> player.getRank().is(PlayerRank.PARTNER)));
     }
 
     @Override
-    public void handle(HyriCommandContext ctx) {
-        final Player player = (Player) ctx.getSender();
+    public void handle(CommandContext ctx) {
+        final Player player = ctx.getSender();
         final IHyriPlayer account = IHyriPlayer.get(player.getUniqueId());
         final HyriGame<?> currentGame = this.plugin.getHyrame().getGameManager().getCurrentGame();
 

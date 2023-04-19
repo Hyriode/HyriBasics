@@ -7,12 +7,11 @@ import fr.hyriode.api.rank.PlayerRank;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
 import fr.hyriode.hyrame.IHyrame;
+import fr.hyriode.hyrame.command.CommandContext;
+import fr.hyriode.hyrame.command.CommandInfo;
+import fr.hyriode.hyrame.command.CommandUsage;
 import fr.hyriode.hyrame.command.HyriCommand;
-import fr.hyriode.hyrame.command.HyriCommandContext;
-import fr.hyriode.hyrame.command.HyriCommandInfo;
-import fr.hyriode.hyrame.command.HyriCommandType;
 import fr.hyriode.hyrame.language.HyrameMessage;
-import fr.hyriode.hyrame.utils.ThreadUtil;
 import org.bukkit.entity.Player;
 
 /**
@@ -22,17 +21,16 @@ import org.bukkit.entity.Player;
 public class NicknameCommand extends HyriCommand<HyriBasics> {
 
     public NicknameCommand(HyriBasics plugin) {
-        super(plugin, new HyriCommandInfo("nick")
+        super(plugin, new CommandInfo("nick")
                 .withAliases("disguise")
                 .withDescription("The command used to edit profile name, skin, etc.")
-                .withType(HyriCommandType.PLAYER)
                 .withPermission(account -> account.getHyriPlus().has()) // Handle staff, Hyri+ and Partners
-                .withUsage("/nick [custom|reset]"));
+                .withUsage(new CommandUsage().withStringMessage(player -> "/nick [custom|reset]")));
     }
 
     @Override
-    public void handle(HyriCommandContext ctx) {
-        final Player player = (Player) ctx.getSender();
+    public void handle(CommandContext ctx) {
+        final Player player = ctx.getSender();
 
         if (IHyrame.get().getGame() != null) {
             player.sendMessage(BasicsMessage.NICKNAME_GAME_MESSAGE.asString(player));
@@ -49,7 +47,7 @@ public class NicknameCommand extends HyriCommand<HyriBasics> {
             return;
         }
 
-        this.handleArgument(ctx, "custom", output -> {
+        ctx.registerArgument("custom", output -> {
             if (account.getRank().is(PlayerRank.PARTNER)) {
                 if (currentNickname.has()) {
                     new NicknameGUI(player, nicknameModule, currentNickname.getName(), currentNickname.getSkinOwner(), currentNickname.getSkin(), currentNickname.getRank()).open();
@@ -61,7 +59,7 @@ public class NicknameCommand extends HyriCommand<HyriBasics> {
             }
         });
 
-        this.handleArgument(ctx, "reset", output -> {
+        ctx.registerArgument("reset", output -> {
             if (currentNickname.has()) {
                 nicknameModule.resetNickname(player);
 
@@ -70,6 +68,8 @@ public class NicknameCommand extends HyriCommand<HyriBasics> {
                 player.sendMessage(BasicsMessage.NICKNAME_NOT_NICK_MESSAGE.asString(account));
             }
         });
+
+        super.handle(ctx);
     }
 
 }

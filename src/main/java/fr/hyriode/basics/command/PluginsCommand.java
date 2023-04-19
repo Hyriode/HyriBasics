@@ -3,10 +3,10 @@ package fr.hyriode.basics.command;
 import fr.hyriode.api.HyriAPI;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
+import fr.hyriode.hyrame.command.CommandContext;
+import fr.hyriode.hyrame.command.CommandInfo;
+import fr.hyriode.hyrame.command.CommandUsage;
 import fr.hyriode.hyrame.command.HyriCommand;
-import fr.hyriode.hyrame.command.HyriCommandContext;
-import fr.hyriode.hyrame.command.HyriCommandInfo;
-import fr.hyriode.hyrame.command.HyriCommandType;
 import fr.hyriode.hyrame.utils.Symbols;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -28,16 +28,15 @@ import java.util.List;
 public class PluginsCommand extends HyriCommand<HyriBasics> {
 
     public PluginsCommand(HyriBasics plugin) {
-        super(plugin, new HyriCommandInfo("plugins")
+        super(plugin, new CommandInfo("plugins")
                 .withDescription("Show all plugins running on the server")
                 .withAliases("pl", "ver", "version", "about", "icanhasbukkit", "spigot", "bukkit")
-                .withType(HyriCommandType.PLAYER)
-                .withUsage("/plugins"));
+                .withUsage(new CommandUsage().withStringMessage(player -> "/plugins")));
     }
 
     @Override
-    public void handle(HyriCommandContext ctx) {
-        final Player player = (Player) ctx.getSender();
+    public void handle(CommandContext ctx) {
+        final Player player = ctx.getSender();
         final ComponentBuilder builder = new ComponentBuilder(ChatColor.DARK_AQUA + "" + ChatColor.STRIKETHROUGH + Symbols.HYPHENS_LINE + "\n")
                 .append(BasicsMessage.COMMAND_PLUGINS_MESSAGE.asString(player)
                         .replace("%server%", HyriAPI.get().getServer().getName())

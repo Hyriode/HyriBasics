@@ -17,6 +17,8 @@
   "command.maintenance.on": "&8▪ &7La &bmaintenance &7est désormais &aactivée&7!",
   "command.maintenance.off": "&8▪ &7La &bmaintenance &7est désormais &cdésactivée&7!",
 
+  "command.slots-edit": "&8▪ &7Le nombre maximal de slots a été changé vers: &b%slots%&7.",
+
   "command.whitelist.already-in": "&8▪ &7Le &bjoueur &7est &cdéjà whitelist&7!",
   "command.whitelist.added": "&8▪ &7Le &bjoueur &7est désormais &awhitelist&7!",
 

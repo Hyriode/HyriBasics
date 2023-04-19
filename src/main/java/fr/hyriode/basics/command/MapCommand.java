@@ -5,9 +5,10 @@ import fr.hyriode.api.server.IHyriServer;
 import fr.hyriode.api.world.IHyriWorld;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.basics.language.BasicsMessage;
+import fr.hyriode.hyrame.command.CommandContext;
+import fr.hyriode.hyrame.command.CommandInfo;
+import fr.hyriode.hyrame.command.CommandUsage;
 import fr.hyriode.hyrame.command.HyriCommand;
-import fr.hyriode.hyrame.command.HyriCommandContext;
-import fr.hyriode.hyrame.command.HyriCommandInfo;
 import fr.hyriode.hyrame.utils.TimeUtil;
 import org.bukkit.entity.Player;
 
@@ -22,15 +23,15 @@ import java.util.Objects;
 public class MapCommand extends HyriCommand<HyriBasics> {
 
     public MapCommand(HyriBasics plugin) {
-        super(plugin, new HyriCommandInfo("map")
+        super(plugin, new CommandInfo("map")
                 .withAliases("carte", "world", "monde", "build", "builder", "builders")
                 .withDescription("Display the information of the current map")
-                .withUsage("/map"));
+                .withUsage(new CommandUsage().withStringMessage(player -> "/map")));
     }
 
     @Override
-    public void handle(HyriCommandContext ctx) {
-        final Player player = (Player) ctx.getSender();
+    public void handle(CommandContext ctx) {
+        final Player player = ctx.getSender();
         final IHyriServer server = HyriAPI.get().getServer();
 
         IHyriWorld world;
