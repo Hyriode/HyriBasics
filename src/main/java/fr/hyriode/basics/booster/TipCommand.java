@@ -37,7 +37,7 @@ public class TipCommand extends HyriCommand<HyriBasics> {
         final IHyriBoosterManager boosterManager = HyriAPI.get().getBoosterManager();
         final List<IHyriBooster> boosters = new ArrayList<>();
 
-        for (IHyriBooster booster : boosterManager.getBoosters()) {
+        for (IHyriBooster booster : boosterManager.getActiveBoosters()) {
             if (boosterManager.hasThanked(booster.getIdentifier(), player.getUniqueId()) || booster.getOwner().equals(player.getUniqueId())) {
                 continue; // Check if the player already thanked or if the booster is his own
             }
@@ -57,17 +57,19 @@ public class TipCommand extends HyriCommand<HyriBasics> {
         for (IHyriBooster booster : boosters) {
             final UUID owner = booster.getOwner();
             final IHyriPlayer ownerAccount = IHyriPlayer.get(owner);
+            final long playerHyris = this.calculatePlayerHyris(booster.getMultiplier());
+            final long ownerHyris = this.calculateOwnerHyris(booster.getMultiplier());
 
-            ownerAccount.getHyris().add(25).withMultiplier(false).exec(); // Add 25 Hyris to the owner of the booster (to thank him)
+            ownerAccount.getHyris().add(ownerHyris).withMultiplier(false).exec(); // Add Hyris to the owner of the booster (to thank him)
             ownerAccount.update();
-            account.getHyris().add(50).withMultiplier(false).exec(); // Add 50 Hyris to the player that thanks
+            account.getHyris().add(playerHyris).withMultiplier(false).exec(); // Add Hyris to the player that thanks
             account.update();
 
-            totalHyris += 50;
+            totalHyris += playerHyris;
 
             if (HyriAPI.get().getPlayerManager().isOnline(owner)) {
                 HyriAPI.get().getPlayerManager().sendMessage(owner, BasicsMessage.COMMAND_TIP_BOOSTER_OWNER.asString(ownerAccount)
-                        .replace("%hyris%", String.valueOf(25))
+                        .replace("%hyris%", String.valueOf(ownerHyris))
                         .replace("%player%", account.getNameWithRank()));
             }
 
@@ -85,6 +87,30 @@ public class TipCommand extends HyriCommand<HyriBasics> {
         player.sendMessage(BasicsMessage.COMMAND_TIP_PLAYER.asString(account)
                 .replace("%boosters%", formattedBoosters.toString())
                 .replace("%hyris%", String.valueOf(totalHyris)));
+    }
+
+    private long calculateOwnerHyris(double multiplier) {
+        if (multiplier >= 3.0D) {
+            return 75L;
+        } else if (multiplier >= 2.5D) {
+            return 50L;
+        } else if (multiplier >= 2.0D) {
+          return 35L;
+        } else {
+            return 25L;
+        }
+    }
+
+    private long calculatePlayerHyris(double multiplier) {
+        if (multiplier >= 3.0D) {
+            return 200L;
+        } else if (multiplier >= 2.5D) {
+            return 145L;
+        } else if (multiplier >= 2.0D) {
+            return 85L;
+        } else {
+            return 50L;
+        }
     }
 
 }

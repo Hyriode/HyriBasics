@@ -1,6 +1,6 @@
 package fr.hyriode.basics.booster;
 
-import fr.hyriode.api.booster.HyriBoosterEvent;
+import fr.hyriode.api.booster.BoosterEnabledEvent;
 import fr.hyriode.api.booster.IHyriBooster;
 import fr.hyriode.api.event.HyriEventHandler;
 
@@ -17,7 +17,7 @@ public class BoosterListener {
     }
 
     @HyriEventHandler
-    public void onBooster(HyriBoosterEvent event) {
+    public void onBooster(BoosterEnabledEvent event) {
         final IHyriBooster booster = event.getBooster();
 
         this.boosterModule.onBoosterEnabled(booster);

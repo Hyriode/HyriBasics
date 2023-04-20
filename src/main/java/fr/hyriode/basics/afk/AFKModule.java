@@ -3,6 +3,7 @@ package fr.hyriode.basics.afk;
 import fr.hyriode.basics.HyriBasics;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -45,6 +46,15 @@ public class AFKModule implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         final AFKPlayer afkPlayer = this.players.get(event.getPlayer().getUniqueId());
+
+        if (afkPlayer != null) {
+            afkPlayer.onMove();
+        }
+    }
+
+    @EventHandler
+    public void onClick(InventoryClickEvent event) {
+        final AFKPlayer afkPlayer = this.players.get(event.getWhoClicked().getUniqueId());
 
         if (afkPlayer != null) {
             afkPlayer.onMove();
