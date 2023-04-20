@@ -1,6 +1,7 @@
 package fr.hyriode.basics.debug.protocol;
 
 import fr.hyriode.api.HyriAPI;
+import fr.hyriode.basics.debug.gui.DebugGUI;
 import fr.hyriode.basics.debug.protocol.packet.EditServerStatePacket;
 import fr.hyriode.basics.debug.protocol.packet.EditServerSlotsPacket;
 import fr.hyriode.basics.debug.protocol.receiver.DevReceiver;
@@ -26,9 +27,12 @@ public class DebugProtocol {
     private HyggLimbo lastLimbo;
 
     public DebugProtocol() {
+        new DebugGUI.Manager();
+
         HyriAPI.get().getPubSub().subscribe(CHANNEL, new DevReceiver());
 
         final HyggEventBus eventBus = HyriAPI.get().getHyggdrasilManager().getHyggdrasilAPI().getEventBus();
+
 
         eventBus.subscribe(HyggServerStartedEvent.class, event -> this.lastServer = event.getServer());
         eventBus.subscribe(HyggProxyStartedEvent.class, event -> this.lastProxy = event.getProxy());
