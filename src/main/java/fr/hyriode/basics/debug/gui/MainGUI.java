@@ -37,7 +37,7 @@ public class MainGUI extends DebugGUI {
         this.setItem(21, this.createInfoItem("Proxies", String.valueOf(HyriAPI.get().getProxyManager().getProxies().size()), lastProxy == null ? "?" : lastProxy.getName()));
 
         // Limbos info
-        this.setItem(21, this.createInfoItem("Limbos", String.valueOf(HyriAPI.get().getLimboManager().getLimbos().size()), lastLimbo == null ? "?" : lastLimbo.getName()));
+        this.setItem(22, this.createInfoItem("Limbos", String.valueOf(HyriAPI.get().getLimboManager().getLimbos().size()), lastLimbo == null ? "?" : lastLimbo.getName()));
 
         // Servers info
         this.setItem(23, this.createInfoItem("Serveurs", String.valueOf(HyriAPI.get().getServerManager().getServers().size()), lastServer == null ? "?" : lastServer.getName()));

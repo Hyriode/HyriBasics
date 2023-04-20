@@ -31,12 +31,13 @@ public class DebugProtocol {
 
         HyriAPI.get().getPubSub().subscribe(CHANNEL, new DevReceiver());
 
-        final HyggEventBus eventBus = HyriAPI.get().getHyggdrasilManager().getHyggdrasilAPI().getEventBus();
+        if (!HyriAPI.get().getConfig().isDevEnvironment()) {
+            final HyggEventBus eventBus = HyriAPI.get().getHyggdrasilManager().getHyggdrasilAPI().getEventBus();
 
-
-        eventBus.subscribe(HyggServerStartedEvent.class, event -> this.lastServer = event.getServer());
-        eventBus.subscribe(HyggProxyStartedEvent.class, event -> this.lastProxy = event.getProxy());
-        eventBus.subscribe(HyggLimboStartedEvent.class, event -> this.lastLimbo = event.getLimbo());
+            eventBus.subscribe(HyggServerStartedEvent.class, event -> this.lastServer = event.getServer());
+            eventBus.subscribe(HyggProxyStartedEvent.class, event -> this.lastProxy = event.getProxy());
+            eventBus.subscribe(HyggLimboStartedEvent.class, event -> this.lastLimbo = event.getLimbo());
+        }
     }
 
     public void editServerSlots(String server, int slots) {

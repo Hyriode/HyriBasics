@@ -50,7 +50,7 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
         final FriendModule friendModule = HyriBasics.get().getFriendModule();
         final IHyriFriendsModule friends = account.getFriends();
 
-        ctx.registerArgument("accept %player%", output -> {
+        ctx.registerArgument("accept %player%", "/f accept <player>", output -> {
             final IHyriPlayer sender = output.get(IHyriPlayer.class);
 
             if (!friendModule.hasRequest(player, friends, sender)) {
@@ -83,7 +83,7 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_ACCEPT_MESSAGE.asString(account).replace("%player%", sender.getNameWithRank())))); // Send the message to the request receiver
         });
 
-        ctx.registerArgument("deny %player%", output -> {
+        ctx.registerArgument("deny %player%", "/f deny <player>", output -> {
             final IHyriPlayer sender = output.get(IHyriPlayer.class);
 
             if (!friendModule.hasRequest(player, friends, sender)) {
@@ -96,7 +96,7 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_DENY_TARGET_MESSAGE.asString(account).replace("%player%", sender.getNameWithRank())))); // Send the message to the request receiver
         });
 
-        ctx.registerArgument("remove %player%", output -> {
+        ctx.registerArgument("remove %player%", "/f remove <player>", output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
 
             if (friendModule.areNotFriends(friends, player, target)) { // Check whether they are not friends
@@ -113,11 +113,11 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_NO_LONGER_MESSAGE.asString(account).replace("%player%", target.getNameWithRank())))); // Send message to the player
         });
 
-        ctx.registerArgument("list %integer%", output -> this.listFriends(output.get(Integer.class), player, account, friends));
-        ctx.registerArgument("list", output -> this.listFriends(0, player, account, friends));
-        ctx.registerArgument("help", output -> player.spigot().sendMessage(HELP.apply(player)));
-        ctx.registerArgument("%player_online%", this.addFriend(player, account, friends));
-        ctx.registerArgument("add %player_online%", this.addFriend(player, account, friends));
+        ctx.registerArgument("list %integer%", "/f list <page>", output -> this.listFriends(output.get(Integer.class), player, account, friends));
+        ctx.registerArgument("list", "/f list", output -> this.listFriends(0, player, account, friends));
+        ctx.registerArgument("help", "/f help", output -> player.spigot().sendMessage(HELP.apply(player)));
+        ctx.registerArgument("%player_online%", "/f <player>", this.addFriend(player, account, friends));
+        ctx.registerArgument("add %player_online%", "/f add <player>", this.addFriend(player, account, friends));
 
         super.handle(ctx);
     }

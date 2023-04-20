@@ -26,7 +26,7 @@ public class ChatCommand extends HyriCommand<HyriBasics> {
         final Player player = ctx.getSender();
         final UUID playerId = player.getUniqueId();
 
-        ctx.registerArgument("set %input%", output -> {
+        ctx.registerArgument("set %input%", "/chat set <chat>", output -> {
             try {
                 final String chat = output.get(String.class).toUpperCase();
                 final HyriChatChannel channel = HyriChatChannel.valueOf(chat);
@@ -52,7 +52,7 @@ public class ChatCommand extends HyriCommand<HyriBasics> {
             }
         });
 
-        ctx.registerArgument("%input% %sentence%", output -> {
+        ctx.registerArgument("%input% %sentence%", "/chat <chat> <message>", output -> {
             final String chat = output.get(0, String.class).toUpperCase();
 
             try {

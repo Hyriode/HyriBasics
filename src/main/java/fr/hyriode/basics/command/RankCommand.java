@@ -40,7 +40,7 @@ public class RankCommand extends HyriCommand<HyriBasics> {
     public void handle(CommandContext ctx) {
         final Player player = ctx.getSender();
 
-        ctx.registerArgument("player %player% %input%", target -> TextComponent.fromLegacyText("staff <player> <rank>"), output -> {
+        ctx.registerArgument("player %player% %input%", "/rank staff <player> <rank>", output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
             final PlayerRank rankType = this.getPlayerByName(output.get(String.class));
 
@@ -54,7 +54,7 @@ public class RankCommand extends HyriCommand<HyriBasics> {
             }
         });
 
-        ctx.registerArgument("staff %player% reset", target -> TextComponent.fromLegacyText("staff <player> reset"), output -> {
+        ctx.registerArgument("staff %player% reset", "/rank staff <player> reset", output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
 
             target.getRank().setStaffType(null);
@@ -63,7 +63,7 @@ public class RankCommand extends HyriCommand<HyriBasics> {
             player.sendMessage(ChatColor.GREEN + "Grade staff reset!");
         });
 
-        ctx.registerArgument("staff %player% %input%", target -> TextComponent.fromLegacyText("staff <player> <rank>"), output -> {
+        ctx.registerArgument("staff %player% %input%", "/rank staff <player> <rank>", output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
             final StaffRank rankType = this.getStaffByName(output.get(String.class));
 
@@ -77,7 +77,7 @@ public class RankCommand extends HyriCommand<HyriBasics> {
             }
         });
 
-        ctx.registerArgument("hyri+ %player% %long%", target -> TextComponent.fromLegacyText("hyri+ <player> <days>"), output -> {
+        ctx.registerArgument("hyri+ %player% %long%", "/rank hyri+ <player> <days>", output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
             final long days = output.get(Long.class);
             final IHyriPlus hyriPlus = target.getHyriPlus();

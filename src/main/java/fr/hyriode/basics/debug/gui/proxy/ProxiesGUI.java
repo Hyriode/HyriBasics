@@ -34,7 +34,7 @@ public class ProxiesGUI extends DebugGUI {
         this.usingPages = true;
         this.newUpdate(3 * 20L);
 
-        this.paginationManager.setArea(new PaginationArea(9, 45));
+        this.paginationManager.setArea(new PaginationArea(9, 44));
         this.setupProxies();
 
         this.setItem(49, BasicsHead.MONITOR_PLUS.asItemBuilder()

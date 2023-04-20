@@ -67,7 +67,7 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
         final IHyriPlayer account = IHyriPlayer.get(playerId);
         final IHyriParty party = this.partyManager.getPlayerParty(playerId);
 
-        ctx.registerArgument("leave", this.partyOutput(ctx, party, output -> {
+        ctx.registerArgument("leave", "/p leave", this.partyOutput(ctx, party, output -> {
             if (party.isLeader(playerId)) {
                 player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_CANT_LEAVE_LEADER_MESSAGE.asString(account))));
                 return;
@@ -76,7 +76,7 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             party.removeMember(playerId, IHyriParty.RemoveReason.MANUAL);
         }));
 
-        ctx.registerArgument("disband", this.partyOutput(ctx, party, output -> {
+        ctx.registerArgument("disband", "/p disband", this.partyOutput(ctx, party, output -> {
             if (!party.getRank(playerId).canDisband()) {
                 this.dontHavePermission(player);
                 return;
@@ -85,7 +85,7 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             party.disband(IHyriParty.DisbandReason.NORMAL);
         }));
 
-        ctx.registerArgument("kick %player%", this.partyOutput(ctx, party, output -> {
+        ctx.registerArgument("kick %player%", "/p kick <player>", this.partyOutput(ctx, party, output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
             final UUID targetId = target.getUniqueId();
 
@@ -108,7 +108,7 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             party.kickMember(targetId, playerId);
         }));
 
-        ctx.registerArgument("lead %player_online%", this.partyOutput(ctx, party, output -> {
+        ctx.registerArgument("lead %player_online%", "/p lead <player>", this.partyOutput(ctx, party, output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
             final UUID targetId = target.getUniqueId();
 
@@ -124,7 +124,7 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             party.setLeader(targetId);
         }));
 
-        ctx.registerArgument("promote %player%", this.partyOutput(ctx, party, output -> {
+        ctx.registerArgument("promote %player%",  "/p promote <player>", this.partyOutput(ctx, party, output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
             final UUID targetId = target.getUniqueId();
 
@@ -135,7 +135,7 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             }
         }));
 
-        ctx.registerArgument("demote %player%", this.partyOutput(ctx, party, output -> {
+        ctx.registerArgument("demote %player%", "/p demote <player>", this.partyOutput(ctx, party, output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
             final UUID targetId = target.getUniqueId();
 
@@ -146,9 +146,9 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             }
         }));
 
-        ctx.registerArgument("chat %sentence%", this.partyOutput(ctx, party, output -> party.sendMessage(playerId, output.get(String.class))));
+        ctx.registerArgument("chat %sentence%", "/p chat <message>", this.partyOutput(ctx, party, output -> party.sendMessage(playerId, output.get(String.class))));
 
-        ctx.registerArgument("mute %input%", this.partyOutput(ctx, party, output -> {
+        ctx.registerArgument("mute %input%", "/p mute [on|off]", this.partyOutput(ctx, party, output -> {
             final HyriPartyRank playerRank = party.getRank(playerId);
 
             if (!playerRank.canMute()) {
@@ -178,7 +178,7 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             party.setChatEnabled(!muted);
         }));
 
-        ctx.registerArgument("stream", this.partyOutput(ctx, party, output -> {
+        ctx.registerArgument("stream", "/p stream", this.partyOutput(ctx, party, output -> {
             if (!party.isLeader(playerId)) {
                 this.dontHavePermission(player);
                 return;
@@ -192,18 +192,18 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             party.setPrivate(!party.isPrivate());
         }));
 
-        ctx.registerArgument("tp %player_online%", this.partyOutput(ctx, party, output -> {
+        ctx.registerArgument("tp %player_online%", "/p tp <player>", this.partyOutput(ctx, party, output -> {
             final IHyriPlayer target = output.get(IHyriPlayer.class);
 
             party.teleport(playerId, target.getUniqueId());
             player.sendMessage(BasicsMessage.PARTY_TP_MESSAGE.asString(account).replace("%player%", target.getNameWithRank()));
         }));
 
-        ctx.registerArgument("list", this.partyOutput(ctx, party, this.listParty(player, account, party)));
-        ctx.registerArgument("info", this.partyOutput(ctx, party, this.listParty(player, account, party)));
-        ctx.registerArgument("accept %player%", this.joinParty(player, account));
-        ctx.registerArgument("join %player%", this.joinParty(player, account));
-        ctx.registerArgument("deny %player%", output -> {
+        ctx.registerArgument("list", "/p list", this.partyOutput(ctx, party, this.listParty(player, account, party)));
+        ctx.registerArgument("info", "/p info", this.partyOutput(ctx, party, this.listParty(player, account, party)));
+        ctx.registerArgument("accept %player%", "/p accept <player>", this.joinParty(player, account));
+        ctx.registerArgument("join %player%", "/p join <player>", this.joinParty(player, account));
+        ctx.registerArgument("deny %player%", "/p deny <player>", output -> {
             final IHyriPlayer requester = output.get(IHyriPlayer.class);
             final IHyriParty requesterParty = this.partyManager.getPlayerParty(requester.getUniqueId());
 
@@ -225,10 +225,10 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             }
         });
 
-        ctx.registerArgument("help", output -> player.spigot().sendMessage(HELP.apply(player)));
-        ctx.registerArgument("%player_online%", this.invitePlayer(player, account));
-        ctx.registerArgument("invite %player_online%", this.invitePlayer(player, account));
-        ctx.registerArgument("add %player_online%", this.invitePlayer(player, account));
+        ctx.registerArgument("help", "/p help", output -> player.spigot().sendMessage(HELP.apply(player)));
+        ctx.registerArgument("%player_online%",  "/p <player>", this.invitePlayer(player, account));
+        ctx.registerArgument("invite %player_online%", "/p invite <player>", this.invitePlayer(player, account));
+        ctx.registerArgument("add %player_online%", "/p add <player>", this.invitePlayer(player, account));
 
         super.handle(ctx);
     }

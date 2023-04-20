@@ -52,8 +52,10 @@ public class ServersGUI extends DebugGUI {
 
         pagination.clear();
 
-        final Stream<HyggServer> serversStream = new ArrayList<>(HyriAPI.get().getServerManager().getServers()).stream();
-        final List<HyggServer> servers = serversStream.sorted(Comparator.comparingInt(o -> ServerStateWrapper.from(o.getState()).getId())).collect(Collectors.toList());
+        final Stream<HyggServer> serversStream = new ArrayList<>(HyriAPI.get().getServerManager().getServers()).stream()
+                .sorted(Comparator.comparingInt(o -> ServerStateWrapper.from(o.getState()).getId()))
+                .sorted(Comparator.comparing(HyggServer::getType));
+        final List<HyggServer> servers = serversStream.collect(Collectors.toList());
 
         for (HyggServer server : servers) {
             final ItemStack itemStack = new ItemBuilder(DevItemUtil.createServerItem(server))
