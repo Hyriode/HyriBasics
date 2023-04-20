@@ -11,6 +11,7 @@ import fr.hyriode.basics.chat.channel.GlobalChannelHandler;
 import fr.hyriode.basics.chat.channel.PartnerChannelHandler;
 import fr.hyriode.basics.chat.channel.PartyChannelHandler;
 import fr.hyriode.basics.chat.channel.StaffChannelHandler;
+import fr.hyriode.basics.debug.protocol.DebugProtocol;
 import fr.hyriode.basics.friend.FriendModule;
 import fr.hyriode.basics.leveling.LevelingModule;
 import fr.hyriode.basics.message.PrivateMessageModule;
@@ -53,6 +54,7 @@ public class HyriBasics extends JavaPlugin implements IPluginProvider {
     private PrivateMessageModule privateMessageModule;
     private TabModule tabModule;
     private AFKModule afkModule;
+    private DebugProtocol debugProtocol;
 
     @Override
     public void onEnable() {
@@ -71,6 +73,7 @@ public class HyriBasics extends JavaPlugin implements IPluginProvider {
         this.privateMessageModule = new PrivateMessageModule();
         this.tabModule = new TabModule();
         this.afkModule = new AFKModule();
+        this.debugProtocol = new DebugProtocol();
 
         // Register HyriAPI events listeners
         HyriAPI.get().getNetworkManager().getEventBus().register(new AnnouncementListener());
@@ -148,6 +151,10 @@ public class HyriBasics extends JavaPlugin implements IPluginProvider {
 
     public AFKModule getAFKModule() {
         return this.afkModule;
+    }
+
+    public DebugProtocol getDebugProtocol() {
+        return this.debugProtocol;
     }
 
     @Override
