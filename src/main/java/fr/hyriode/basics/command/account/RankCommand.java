@@ -1,4 +1,4 @@
-package fr.hyriode.basics.command;
+package fr.hyriode.basics.command.account;
 
 import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.player.IHyriPlayer;

@@ -169,6 +169,8 @@
   "gui.nickname.random.skin": "&bRandom skin",
   "gui.nickname.random.rank": "&bRandom rank",
 
+  "booster.boss-bar": "&b+%boost%% &f┃ %owner% &aboosted &fthe &b%game% &f(&b/thank &fto thank him)",
+
   "button.accept": "&a[Accept]",
   "button.deny": "&c[Deny]",
 

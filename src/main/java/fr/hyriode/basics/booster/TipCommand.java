@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by AstFaster
@@ -75,12 +76,12 @@ public class TipCommand extends HyriCommand<HyriBasics> {
 
             boosterManager.addThank(booster.getIdentifier(), player.getUniqueId()); // Save the thank
 
-            formattedBoosters.append(ChatColor.DARK_GRAY + " ▪ ")
+            formattedBoosters.append(ChatColor.DARK_GRAY).append(" ▪ ")
                     .append(ownerAccount.getNameWithRank())
                     .append(ChatColor.WHITE).append(" <> ")
                     .append(ChatColor.AQUA).append(HyriAPI.get().getGameManager().getGameInfo(booster.getGame()).getDisplayName())
                     .append(ChatColor.GRAY).append(" (+")
-                    .append((int) booster.getMultiplier() * 100)
+                    .append((int) (booster.getMultiplier() * 100 - 100))
                     .append("%)\n");
         }
 
@@ -91,25 +92,25 @@ public class TipCommand extends HyriCommand<HyriBasics> {
 
     private long calculateOwnerHyris(double multiplier) {
         if (multiplier >= 3.0D) {
-            return 75L;
+            return ThreadLocalRandom.current().nextInt(70, 75);
         } else if (multiplier >= 2.5D) {
-            return 50L;
+            return ThreadLocalRandom.current().nextInt(45, 52);
         } else if (multiplier >= 2.0D) {
-          return 35L;
+          return ThreadLocalRandom.current().nextInt(30, 38);
         } else {
-            return 25L;
+            return ThreadLocalRandom.current().nextInt(20, 28);
         }
     }
 
     private long calculatePlayerHyris(double multiplier) {
         if (multiplier >= 3.0D) {
-            return 200L;
+            return ThreadLocalRandom.current().nextInt(190, 245);
         } else if (multiplier >= 2.5D) {
-            return 145L;
+            return ThreadLocalRandom.current().nextInt(130, 155);
         } else if (multiplier >= 2.0D) {
-            return 85L;
+            return ThreadLocalRandom.current().nextInt(70, 95);
         } else {
-            return 50L;
+            return ThreadLocalRandom.current().nextInt(45, 60);
         }
     }
 

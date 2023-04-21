@@ -225,6 +225,7 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             }
         });
 
+        ctx.registerArgument("", output -> player.spigot().sendMessage(HELP.apply(player)));
         ctx.registerArgument("help", "/p help", output -> player.spigot().sendMessage(HELP.apply(player)));
         ctx.registerArgument("%player_online%",  "/p <player>", this.invitePlayer(player, account));
         ctx.registerArgument("invite %player_online%", "/p invite <player>", this.invitePlayer(player, account));

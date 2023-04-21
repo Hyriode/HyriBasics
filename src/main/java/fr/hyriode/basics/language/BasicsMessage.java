@@ -156,6 +156,8 @@ public enum BasicsMessage {
     NICKNAME_GUI_RANDOM_SKIN("gui.nickname.random.skin"),
     NICKNAME_GUI_RANDOM_RANK("gui.nickname.random.rank"),
 
+    BOOSTER_BOSS_BAR("booster.boss-bar"),
+
     BUTTON_ACCEPT("button.accept"),
     BUTTON_DENY("button.deny"),
 
