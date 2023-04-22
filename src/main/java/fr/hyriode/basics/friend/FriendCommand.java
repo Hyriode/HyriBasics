@@ -195,8 +195,15 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
 
         showingFriends.sort(Comparator.comparing(friend -> friend.getSession() == null));
 
+        final List<ListedFriend> pageContent = showingFriends.getPageContent(page);
+
+        if (pageContent.size() == 0) {
+            this.listFriends(page - 1, player, account, friendsModule);
+            return;
+        }
+
         player.spigot().sendMessage(createMessage(builder -> {
-            for (ListedFriend friend : showingFriends.getPageContent(page)) {
+            for (ListedFriend friend : pageContent) {
                 final IHyriPlayer friendAccount = friend.getAccount();
                 final IHyriPlayerSession friendSession = friend.getSession();
 
@@ -211,7 +218,7 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
                             .replace("%player%", friendAccount.getNameWithRank()));
                 }
 
-                if (showingFriends.indexOf(friend) != showingFriends.size() - 1) {
+                if (pageContent.indexOf(friend) != pageContent.size() - 1) {
                     builder.append("\n");
                 }
             }
