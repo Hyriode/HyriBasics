@@ -113,7 +113,15 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
             player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_NO_LONGER_MESSAGE.asString(account).replace("%player%", target.getNameWithRank())))); // Send message to the player
         });
 
-        ctx.registerArgument("list %integer%", "/f list <page>", output -> this.listFriends(output.get(Integer.class), player, account, friends));
+        ctx.registerArgument("list %integer%", "/f list <page>", output -> {
+             int page = output.get(Integer.class);
+
+            if (page < 1) {
+                page = 1;
+            }
+
+            this.listFriends(page - 1, player, account, friends);
+        });
         ctx.registerArgument("list", "/f list", output -> this.listFriends(0, player, account, friends));
         ctx.registerArgument("", output -> player.spigot().sendMessage(HELP.apply(player)));
         ctx.registerArgument("help", "/f help", output -> player.spigot().sendMessage(HELP.apply(player)));
