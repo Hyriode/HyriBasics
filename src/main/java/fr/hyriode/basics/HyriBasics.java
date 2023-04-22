@@ -10,7 +10,6 @@ import fr.hyriode.basics.chat.DefaultChatHandler;
 import fr.hyriode.basics.chat.channel.GlobalChannelHandler;
 import fr.hyriode.basics.chat.channel.PartnerChannelHandler;
 import fr.hyriode.basics.chat.channel.PartyChannelHandler;
-import fr.hyriode.basics.chat.channel.StaffChannelHandler;
 import fr.hyriode.basics.debug.protocol.DebugProtocol;
 import fr.hyriode.basics.friend.FriendModule;
 import fr.hyriode.basics.leveling.LevelingModule;
@@ -86,7 +85,6 @@ public class HyriBasics extends JavaPlugin implements IPluginProvider {
 
         channelRegistry.accept(HyriChatChannel.GLOBAL, new GlobalChannelHandler());
         channelRegistry.accept(HyriChatChannel.PARTY, new PartyChannelHandler());
-        channelRegistry.accept(HyriChatChannel.STAFF, new StaffChannelHandler());
         channelRegistry.accept(HyriChatChannel.PARTNER, new PartnerChannelHandler());
     }
 
