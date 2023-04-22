@@ -29,6 +29,10 @@ public class FriendListener {
         for (Player player : Bukkit.getOnlinePlayers()) {
             final IHyriPlayer target = IHyriPlayer.get(player.getUniqueId());
 
+            if (friend == null) {
+                continue;
+            }
+
             if (target.getFriends().has(friend.getUniqueId()) && target.getSettings().isFriendConnectionNotificationEnabled()) {
                 player.sendMessage(message.getValue(target).replace("%player%", friend.getName()));
             }
