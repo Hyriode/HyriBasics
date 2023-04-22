@@ -34,6 +34,12 @@ public class DefaultChatHandler implements IHyriChatHandler {
             account.update();
         }
 
+        if (event.getMessage().startsWith("&") && HyriChatChannel.STAFF.hasAccess(account)) {
+            System.out.println("Sending message to staff channel");
+            HyriAPI.get().getChatChannelManager().sendMessage(HyriChatChannel.STAFF, playerId, event.getMessage(), false);
+            return true;
+        }
+
         HyriAPI.get().getChatChannelManager().sendMessage(settings.getChatChannel(), playerId, event.getMessage(), false);
         return true;
     }
