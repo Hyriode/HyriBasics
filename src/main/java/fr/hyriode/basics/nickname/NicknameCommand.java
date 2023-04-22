@@ -47,17 +47,17 @@ public class NicknameCommand extends HyriCommand<HyriBasics> {
             return;
         }
 
-        ctx.registerArgument("custom", output -> {
-            if (account.getRank().is(PlayerRank.PARTNER)) {
-                if (currentNickname.has()) {
-                    new NicknameGUI(player, nicknameModule, currentNickname.getName(), currentNickname.getSkinOwner(), currentNickname.getSkin(), currentNickname.getRank()).open();
-                } else {
-                    new NicknameGUI(player, nicknameModule, null, nicknameModule.getLoader().getRandomSkin(), PlayerRank.PLAYER).open();
-                }
-            } else {
-                player.sendMessage(HyrameMessage.PERMISSION_ERROR.asString(account));
-            }
-        });
+//        ctx.registerArgument("custom", output -> {
+//            if (account.getRank().is(PlayerRank.PARTNER)) {
+//                if (currentNickname.has()) {
+//                    new NicknameGUI(player, nicknameModule, currentNickname.getName(), currentNickname.getSkinOwner(), currentNickname.getSkin(), currentNickname.getRank()).open();
+//                } else {
+//                    new NicknameGUI(player, nicknameModule, null, nicknameModule.getLoader().getRandomSkin(), PlayerRank.PLAYER).open();
+//                }
+//            } else {
+//                player.sendMessage(HyrameMessage.PERMISSION_ERROR.asString(account));
+//            }
+//        });
 
         ctx.registerArgument("reset", output -> {
             if (currentNickname.has()) {
