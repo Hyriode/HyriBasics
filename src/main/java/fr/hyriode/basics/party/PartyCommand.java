@@ -355,7 +355,7 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             final IHyriPlayer requester = output.get(IHyriPlayer.class);
             final IHyriParty party = this.partyManager.getPlayerParty(requester.getUniqueId());
 
-            if (!this.partyManager.hasRequest(party.getId(), playerId) && party.isPrivate()) {
+            if (party == null || (!this.partyManager.hasRequest(party.getId(), playerId) && party.isPrivate())) {
                 player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_NO_INVITATION_MESSAGE.asString(account).replace("%player%", requester.getNameWithRank()))));
                 return;
             }
