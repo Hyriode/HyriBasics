@@ -11,6 +11,7 @@ import fr.hyriode.hyrame.command.CommandUsage;
 import fr.hyriode.hyrame.command.HyriCommand;
 import fr.hyriode.hyrame.game.HyriGame;
 import fr.hyriode.hyrame.utils.PlayerUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
@@ -46,12 +47,30 @@ public class VanishCommand extends HyriCommand<HyriBasics> {
 
         if (session.isVanished()) {
             session.setVanished(false);
-            PlayerUtil.showPlayer(player);
+
+            for (Player target : Bukkit.getOnlinePlayers()) {
+                final IHyriPlayerSession targetSession = IHyriPlayerSession.get(target.getUniqueId());
+
+                if (!targetSession.isVanished() || targetSession.isModerating()) {
+                    target.showPlayer(player);
+                }
+            }
 
             player.sendMessage(BasicsMessage.COMMAND_VANISH_UNSET.asString(account));
         } else {
             session.setVanished(true);
-            PlayerUtil.hidePlayer(player, true);
+
+            for (Player target : Bukkit.getOnlinePlayers()) {
+                if (target == player) {
+                    continue;
+                }
+
+                final IHyriPlayer targetAccount = IHyriPlayer.get(target.getUniqueId());
+
+                if (!targetAccount.getRank().isStaff()) {
+                    target.hidePlayer(player);
+                }
+            }
 
             player.sendMessage(BasicsMessage.COMMAND_VANISH_SET.asString(account));
         }
