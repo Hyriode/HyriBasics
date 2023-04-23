@@ -25,18 +25,20 @@ public class NicknameHandler implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
-        final Player player = event.getPlayer();
-        final IHyriPlayerSession session = IHyriPlayerSession.get(player.getUniqueId());
+        Bukkit.getScheduler().runTaskLater(HyriBasics.get(), () -> {
+            final Player player = event.getPlayer();
+            final IHyriPlayerSession session = IHyriPlayerSession.get(player.getUniqueId());
 
-        if (session == null) {
-            return;
-        }
+            if (session == null) {
+                return;
+            }
 
-        final IHyriNickname nickname = session.getNickname();
+            final IHyriNickname nickname = session.getNickname();
 
-        if (nickname.has()) {
-            this.nicknameModule.applyNickname(player, nickname.getName(), nickname.getSkin());
-        }
+            if (nickname.has()) {
+                this.nicknameModule.applyNickname(player, nickname.getName(), nickname.getSkin());
+            }
+        }, 5L);
     }
 
 }
