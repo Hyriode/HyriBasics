@@ -35,7 +35,7 @@ public class DefaultTab extends Tab {
     private void addHeaderLines() {
         final int ping = HyriAPI.get().getPlayerManager().getPing(this.player.getUniqueId());
         final String server = HyriAPI.get().getServer().getName();
-        final int players = HyriAPI.get().getNetworkManager().getNetwork().getPlayerCounter().getPlayers();
+        final int players = HyriAPI.get().getNetworkManager().getPlayerCounter().getPlayers();
         double tps = HyriAPI.get().getServer().getTPS();
 
         if (tps > 20) {

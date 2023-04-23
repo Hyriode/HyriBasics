@@ -179,7 +179,7 @@
   "tab.store": " Boutique: ",
   "tab.discord": " Discord: ",
 
-  "announcement.message": "&3&m--------------------------------------------------&r\n                                       &b⬥ &lANNONCE &r&b⬥\n&f%message%\n&3&m--------------------------------------------------",
+  "announcement.message": "&3&m--------------------------------------------------&r\n                                 &b⬥ &lANNONCE &r&b⬥\n&f%message%\n&3&m--------------------------------------------------",
   "booster.message": "&3&m--------------------------------------------------&r\n                                 &b⬥ &lBOOSTER &r&b⬥\n         %player% &fvient d'appliquer un &bbooster&f!\n \n                      &8▪ &b+%multiplier%% &fd'&dHyris &fen &b%game%\n                      &8▪ &b/merci &fpour le remercier\n&3&m--------------------------------------------------",
   "leveling.message": "&3&m--------------------------------------------------&r\n                                 &b⬥ &lLEVEL UP &r&b⬥\n            &fBravo vous venez de gagner un niveau!\n                            Niveau &b%old_level%✯ &f→ &b%new_level%✯\n&3&m--------------------------------------------------",
 
