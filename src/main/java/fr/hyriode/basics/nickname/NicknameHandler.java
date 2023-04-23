@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
 /**
  * Created by AstFaster
@@ -24,21 +25,19 @@ public class NicknameHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onJoin(PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTaskLater(HyriBasics.get(), () -> {
-            final Player player = event.getPlayer();
-            final IHyriPlayerSession session = IHyriPlayerSession.get(player.getUniqueId());
+    public void onLogin(PlayerLoginEvent event) {
+        final Player player = event.getPlayer();
+        final IHyriPlayerSession session = IHyriPlayerSession.get(player.getUniqueId());
 
-            if (session == null) {
-                return;
-            }
+        if (session == null) {
+            return;
+        }
 
-            final IHyriNickname nickname = session.getNickname();
+        final IHyriNickname nickname = session.getNickname();
 
-            if (nickname.has()) {
-                this.nicknameModule.applyNickname(player, nickname.getName(), nickname.getSkin());
-            }
-        }, 5L);
+        if (nickname.has()) {
+            this.nicknameModule.applyNickname(player, nickname.getName(), nickname.getSkin());
+        }
     }
 
 }
