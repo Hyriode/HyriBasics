@@ -183,5 +183,7 @@
   "booster.message": "&3&m--------------------------------------------------&r\n                               &b⬥ &lBOOSTER &r&b⬥\n                %player% &fjust applied a &bbooster&f!\n \n                      &8▪ &b+%multiplier%% &fof &dHyris &fin &b%game%\n                      &8▪ &b/thanks &ffor thanking him\n&3&m--------------------------------------------------",
   "leveling.message": "&3&m--------------------------------------------------&r\n                               &b⬥ &lLEVEL UP &r&b⬥\n            &fCongratulations, you just pass a level!\n                            Level &b%old_level%✯ &f→ &b%new_level%✯\n&3&m--------------------------------------------------",
 
-  "player.rank": "&7Player"
+  "player.rank": "&7Player",
+
+  "message.timed-out-reward": "&3Hyriode &f┃ En vous connectant vous venez de gagner &a%hyodes% Hyodes &f!"
 }

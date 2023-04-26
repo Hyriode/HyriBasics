@@ -67,7 +67,7 @@ public class ServerCreateGUI extends HyriInventory {
 
                     final long before = System.currentTimeMillis();
 
-                    this.owner.sendMessage(ChatColor.GREEN + "Serveur en cours de création... (type: " + this.gameName + "; type de jeu: " + this.gameType + "; map: " + this.map);
+                    this.owner.sendMessage(ChatColor.GREEN + "Serveur en cours de création... (type: " + this.gameName + "; type de jeu: " + this.gameType + "; map: " + this.map.getName());
 
                     HyriAPI.get().getServerManager().createServer(new HyggServerCreationInfo(this.gameName)
                             .withGameType(this.gameType)
