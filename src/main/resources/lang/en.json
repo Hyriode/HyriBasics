@@ -12,7 +12,7 @@
   "command.website.message": "&8▪ &7Website: &b%website%",
   "command.store.message": "&8▪ &7Store: &b%store%",
 
-  "command.lobby.message": "&cVous êtes déjà dans un lobby!",
+  "command.lobby.message": "&cYou are already in a lobby!",
 
   "command.maintenance.on": "&8▪ &bMaintenance &7is now &aenabled&7!",
   "command.maintenance.off": "&8▪ &bMaintenance &7is now &cdisabled&7!",
@@ -184,6 +184,12 @@
   "leveling.message": "&3&m--------------------------------------------------&r\n                               &b⬥ &lLEVEL UP &r&b⬥\n            &fCongratulations, you just pass a level!\n                            Level &b%old_level%✯ &f→ &b%new_level%✯\n&3&m--------------------------------------------------",
 
   "player.rank": "&7Player",
+
+  "automatic-message.cheater": "\n&fIf you fight against a &bcheater &fwho is not punished yet, feel free to perform &c/report&f!\n",
+  "automatic-message.store": "\n&fYou can stock up on &aHyodes on the store: &6hyriode.fr/store &f!\n",
+  "automatic-message.helpers": "\n&fIf you need help, our &5Helpers &fare available on &3discord.hyriode.fr &fwith tickets!\n",
+  "automatic-message.recruitment": "\n&fYou want to join the &3Hyriode &fteam? Check the available &ajobs &fon our Discord in the &b#recrutement &fchannel!\n",
+  "automatic-message.partner": "\n&fYou want to become a &6Partner&f? Discover the conditions on our Discord in the &b#informations &fchannel.\n",
 
   "message.timed-out-reward": "&3Hyriode &f┃ En vous connectant vous venez de gagner &a%hyodes% Hyodes &f!"
 }

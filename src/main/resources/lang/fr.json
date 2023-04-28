@@ -12,7 +12,7 @@
   "command.website.message": "&8▪ &7Site: &b%website%",
   "command.store.message": "&8▪ &7Boutique: &b%store%",
 
-  "command.lobby.message": "&cYou are already in a lobby!",
+  "command.lobby.message": "&cVous êtes déjà dans un lobby!",
 
   "command.maintenance.on": "&8▪ &7La &bmaintenance &7est désormais &aactivée&7!",
   "command.maintenance.off": "&8▪ &7La &bmaintenance &7est désormais &cdésactivée&7!",
@@ -38,7 +38,7 @@
   "command.chat-channel.cant-join": "&cVous n'avez pas la permission de rejoindre ce canal!",
   "command.chat-channel.cant-talk": "&cVous ne pouvez pas parler dans ce canal, vous êtes donc transféré vers le canal global.",
 
-  "command.private-message.himself": "&cVous ne pouvez pas envoyer de messages à vous même!",
+  "command.private-message.himself": "&cVous ne pouvez pas envoyer de message à vous même!",
   "command.private-message.no-player-to-reply": "&cVous n'avez aucun joueur à qui répondre!",
   "command.private-message.not-online": "%player% &cest hors-ligne!",
   "command.private-message.received": "&3Reçu de %player%&b: ",
@@ -184,6 +184,12 @@
   "leveling.message": "&3&m--------------------------------------------------&r\n                                 &b⬥ &lLEVEL UP &r&b⬥\n            &fBravo vous venez de gagner un niveau!\n                            Niveau &b%old_level%✯ &f→ &b%new_level%✯\n&3&m--------------------------------------------------",
 
   "player.rank": "&7Joueur",
+
+  "automatic-message.cheater": "\n&fSi vous croisez un &btricheur &fqui n'a pas encore été sanctionné, n'hésitez pas à utiliser le &c/report &f!\n",
+  "automatic-message.store": "\n&fVous pouvez faire votre stock d'&aHyodes sur la boutique: &6hyriode.fr/store &f!\n",
+  "automatic-message.helpers": "\n&fSi vous avez besoin d'aide, nos &5Helpeurs &fsont disponibles sur &3discord.hyriode.fr &fgrâce aux tickets !\n",
+  "automatic-message.recruitment": "\n&fVous souhaitez rejoindre l'équipe d'&3Hyriode &f? Consultez les &apostes &fdisponibles sur notre Discord dans le channel &b#recrutement &f!\n",
+  "automatic-message.partner": "\n&fVous souhaitez devenir &6Partner &f? Découvrez les conditions sur notre Discord dans le channel &b#informations&f.\n",
 
   "message.timed-out-reward": "&3Hyriode &f┃ En vous connectant vous venez de gagner &a%hyodes% Hyodes &f!"
 }

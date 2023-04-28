@@ -50,6 +50,7 @@ public class JoinListener extends HyriListener<HyriBasics> {
                 final int hyodes = this.randomHyodes();
 
                 transactions.add("temporarily", "timed-out-reward", new TemporarilyTransaction(hyodes));
+                account.getHyodes().add(hyodes).exec();
                 account.update();
 
                 player.sendMessage(HyriLanguageMessage.get("message.timed-out-reward").getValue(account).replace("%hyodes%", String.valueOf(hyodes)));

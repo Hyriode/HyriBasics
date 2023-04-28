@@ -13,10 +13,12 @@ import fr.hyriode.basics.chat.channel.PartyChannelHandler;
 import fr.hyriode.basics.debug.protocol.DebugProtocol;
 import fr.hyriode.basics.friend.FriendModule;
 import fr.hyriode.basics.leveling.LevelingModule;
+import fr.hyriode.basics.message.AutomaticMessagesModule;
 import fr.hyriode.basics.message.PrivateMessageModule;
 import fr.hyriode.basics.nickname.NicknameModule;
 import fr.hyriode.basics.party.PartyModule;
 import fr.hyriode.basics.tab.TabModule;
+import fr.hyriode.hyggdrasil.api.server.HyggServer;
 import fr.hyriode.hyrame.HyrameLoader;
 import fr.hyriode.hyrame.IHyrame;
 import fr.hyriode.hyrame.plugin.IPluginProvider;
@@ -54,6 +56,7 @@ public class HyriBasics extends JavaPlugin implements IPluginProvider {
     private TabModule tabModule;
     private AFKModule afkModule;
     private DebugProtocol debugProtocol;
+    private AutomaticMessagesModule automaticMessagesModule;
 
     @Override
     public void onEnable() {
@@ -73,6 +76,7 @@ public class HyriBasics extends JavaPlugin implements IPluginProvider {
         this.tabModule = new TabModule();
         this.afkModule = new AFKModule();
         this.debugProtocol = new DebugProtocol();
+        this.automaticMessagesModule = new AutomaticMessagesModule();
 
         // Register HyriAPI events listeners
         HyriAPI.get().getNetworkManager().getEventBus().register(new AnnouncementListener());
@@ -86,6 +90,8 @@ public class HyriBasics extends JavaPlugin implements IPluginProvider {
         channelRegistry.accept(HyriChatChannel.GLOBAL, new GlobalChannelHandler());
         channelRegistry.accept(HyriChatChannel.PARTY, new PartyChannelHandler());
         channelRegistry.accept(HyriChatChannel.PARTNER, new PartnerChannelHandler());
+
+        HyriAPI.get().getServer().setState(HyggServer.State.READY);
     }
 
     @Override
@@ -153,6 +159,10 @@ public class HyriBasics extends JavaPlugin implements IPluginProvider {
 
     public DebugProtocol getDebugProtocol() {
         return this.debugProtocol;
+    }
+
+    public AutomaticMessagesModule getAutomaticMessagesModule() {
+        return this.automaticMessagesModule;
     }
 
     @Override
