@@ -67,7 +67,7 @@ public class JoinListener extends HyriListener<HyriBasics> {
     }
 
     private int randomHyodes() {
-        return 50 * ThreadLocalRandom.current().nextInt(0, 10);
+        return 50 * ThreadLocalRandom.current().nextInt(1, 10);
     }
 
     public static class TemporarilyTransaction implements IHyriTransactionContent {

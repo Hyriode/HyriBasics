@@ -185,11 +185,11 @@
 
   "player.rank": "&7Player",
 
-  "automatic-message.cheater": "\n&fIf you fight against a &bcheater &fwho is not punished yet, feel free to perform &c/report&f!\n\n",
-  "automatic-message.store": "\n&fYou can stock up on &aHyodes &fon the store: &6hyriode.fr/store &f!\n\n",
-  "automatic-message.helpers": "\n&fIf you need help, our &5Helpers &fare available on &3discord.hyriode.fr &fwith tickets!\n\n",
-  "automatic-message.recruitment": "\n&fYou want to join the &3Hyriode &fteam? Check the available &ajobs &fon our Discord in the &b#recrutement &fchannel!\n\n",
-  "automatic-message.partner": "\n&fYou want to become a &6Partner&f? Discover the conditions on our Discord in the &b#informations &fchannel.\n\n",
+  "automatic-message.cheater": "\n&fIf you fight against a &bcheater &fwho is not punished yet, feel free to perform &c/report&f!\n \n",
+  "automatic-message.store": "\n&fYou can stock up on &aHyodes &fon the store: &6hyriode.fr/store &f!\n \n",
+  "automatic-message.helpers": "\n&fIf you need help, our &5Helpers &fare available on &3discord.hyriode.fr &fwith tickets!\n \n",
+  "automatic-message.recruitment": "\n&fYou want to join the &3Hyriode &fteam? Check the available &ajobs &fon our Discord in the &b#recrutement &fchannel!\n \n",
+  "automatic-message.partner": "\n&fYou want to become a &6Partner&f? Discover the conditions on our Discord in the &b#informations &fchannel.\n \n",
 
   "message.timed-out-reward": "&3Hyriode &f┃ En vous connectant vous venez de gagner &a%hyodes% Hyodes &f!"
 }
