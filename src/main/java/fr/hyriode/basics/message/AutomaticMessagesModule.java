@@ -25,6 +25,10 @@ public class AutomaticMessagesModule {
         Collections.shuffle(this.messages);
 
         Bukkit.getScheduler().runTaskTimer(HyriBasics.get(), () -> {
+            if (this.currentIndex >= this.messages.size()) {
+                this.currentIndex = 0;
+            }
+
             final HyriLanguageMessage message = HyriLanguageMessage.get("automatic-message." + this.messages.get(this.currentIndex));
 
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -32,10 +36,6 @@ public class AutomaticMessagesModule {
             }
 
             this.currentIndex++;
-
-            if (this.currentIndex >= this.messages.size()) {
-                this.currentIndex = 0;
-            }
         }, TIME_BETWEEN_MESSAGES, TIME_BETWEEN_MESSAGES);
     }
 
