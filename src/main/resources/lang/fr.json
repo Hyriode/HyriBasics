@@ -185,11 +185,11 @@
 
   "player.rank": "&7Joueur",
 
-  "automatic-message.cheater": "\n&fSi vous croisez un &btricheur &fqui n'a pas encore été sanctionné, n'hésitez pas à utiliser le &c/report &f!\n",
-  "automatic-message.store": "\n&fVous pouvez faire votre stock d'&aHyodes &fsur la boutique: &6hyriode.fr/store &f!\n",
-  "automatic-message.helpers": "\n&fSi vous avez besoin d'aide, nos &5Helpers &fsont disponibles sur &3discord.hyriode.fr &fgrâce aux tickets !\n",
-  "automatic-message.recruitment": "\n&fVous souhaitez rejoindre l'équipe d'&3Hyriode &f? Consultez les &apostes &fdisponibles sur notre Discord dans le channel &b#recrutement &f!\n",
-  "automatic-message.partner": "\n&fVous souhaitez devenir &6Partner &f? Découvrez les conditions sur notre Discord dans le channel &b#informations&f.\n",
+  "automatic-message.cheater": "\n&fSi vous croisez un &btricheur &fqui n'a pas encore été sanctionné, n'hésitez pas à utiliser le &c/report &f!\n\n",
+  "automatic-message.store": "\n&fVous pouvez faire votre stock d'&aHyodes &fsur la boutique: &6hyriode.fr/store &f!\n\n",
+  "automatic-message.helpers": "\n&fSi vous avez besoin d'aide, nos &5Helpers &fsont disponibles sur &3discord.hyriode.fr &fgrâce aux tickets !\n\n",
+  "automatic-message.recruitment": "\n&fVous souhaitez rejoindre l'équipe d'&3Hyriode &f? Consultez les &apostes &fdisponibles sur notre Discord dans le channel &b#recrutement &f!\n\n",
+  "automatic-message.partner": "\n&fVous souhaitez devenir &6Partner &f? Découvrez les conditions sur notre Discord dans le channel &b#informations&f.\n\n",
 
   "message.timed-out-reward": "&3Hyriode &f┃ En vous connectant vous venez de gagner &a%hyodes% Hyodes &f!"
 }

@@ -32,6 +32,10 @@ public class AutomaticMessagesModule {
             }
 
             this.currentIndex++;
+
+            if (this.currentIndex >= this.messages.size()) {
+                this.currentIndex = 0;
+            }
         }, TIME_BETWEEN_MESSAGES, TIME_BETWEEN_MESSAGES);
     }
 
