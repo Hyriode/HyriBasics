@@ -11,12 +11,14 @@ import fr.hyriode.api.player.model.IHyriTransactionContent;
 import fr.hyriode.api.player.model.modules.IHyriTransactionsModule;
 import fr.hyriode.basics.HyriBasics;
 import fr.hyriode.hyrame.listener.HyriListener;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by AstFaster
@@ -30,8 +32,13 @@ public class JoinListener extends HyriListener<HyriBasics> {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        HyriAPI.get().getScheduler().runAsync(() -> {
+        HyriAPI.get().getScheduler().schedule(() -> {
             final Player player = event.getPlayer();
+
+            if (player == null || !player.isOnline() || !player.isValid()) {
+                return;
+            }
+
             final UUID playerId = player.getUniqueId();
             final IHyriPlayer account = IHyriPlayer.get(player.getUniqueId());
 
@@ -53,9 +60,10 @@ public class JoinListener extends HyriListener<HyriBasics> {
                 account.getHyodes().add(hyodes).exec();
                 account.update();
 
+                player.playSound(player.getLocation(), Sound.NOTE_PLING, 2.0f, 2.0F);
                 player.sendMessage(HyriLanguageMessage.get("message.timed-out-reward").getValue(account).replace("%hyodes%", String.valueOf(hyodes)));
             }
-        });
+        }, 2, TimeUnit.SECONDS);
     }
 
     private int randomHyodes() {
