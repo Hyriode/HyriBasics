@@ -90,8 +90,6 @@ public class HyriBasics extends JavaPlugin implements IPluginProvider {
         channelRegistry.accept(HyriChatChannel.GLOBAL, new GlobalChannelHandler());
         channelRegistry.accept(HyriChatChannel.PARTY, new PartyChannelHandler());
         channelRegistry.accept(HyriChatChannel.PARTNER, new PartnerChannelHandler());
-
-        HyriAPI.get().getServer().setState(HyggServer.State.READY);
     }
 
     @Override
