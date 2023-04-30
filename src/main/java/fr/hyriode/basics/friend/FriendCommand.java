@@ -165,7 +165,7 @@ public class FriendCommand extends HyriCommand<HyriBasics> {
             }
 
             if (targetSession.getNickname().has() && !account.getRank().isStaff()) { // Check if the target has a nickname
-                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_DOESNT_ACCEPT_MESSAGE.asString(account).replace("%player%", targetSession.getNameWithRank()))));
+                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.FRIEND_DOESNT_ACCEPT_MESSAGE.asString(account).replace("%player%", target.getNameWithRank()))));
                 return;
             }
 

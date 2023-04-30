@@ -291,6 +291,12 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             final UUID playerId = player.getUniqueId();
             final IHyriPlayer target = output.get(IHyriPlayer.class);
             final UUID targetId = target.getUniqueId();
+            final IHyriPlayerSession targetSession = IHyriPlayerSession.get(targetId);
+
+            if (targetSession.getNickname().has() && !account.getRank().isStaff()) {
+                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_DOESNT_ACCEPT_MESSAGE.asString(account).replace("%player%", target.getNameWithRank()))));
+                return;
+            }
 
             IHyriParty party = this.partyManager.getPlayerParty(playerId);
             if (party == null) {
@@ -321,13 +327,6 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
 
             if (party.getMembers().size() >= partyLimit) {
                 player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_LIMIT_MESSAGE.asString(account).replace("%limit%", String.valueOf(partyLimit)))));
-                return;
-            }
-
-            final IHyriPlayerSession targetSession = IHyriPlayerSession.get(targetId);
-
-            if (targetSession.getNickname().has() && !account.getRank().isStaff()) {
-                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_DOESNT_ACCEPT_MESSAGE.asString(account).replace("%player%", targetSession.getNameWithRank()))));
                 return;
             }
 
