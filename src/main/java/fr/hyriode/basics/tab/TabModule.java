@@ -1,5 +1,6 @@
 package fr.hyriode.basics.tab;
 
+import fr.hyriode.api.HyriAPI;
 import fr.hyriode.hyrame.utils.ThreadUtil;
 import org.bukkit.entity.Player;
 
@@ -15,12 +16,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class TabModule {
 
-    private final Map<UUID, DefaultTab> tabs;
+    private final Map<UUID, DefaultTab> tabs = new HashMap<>();
 
     public TabModule() {
-        this.tabs = new HashMap<>();
-
-        ThreadUtil.EXECUTOR.scheduleAtFixedRate(() -> {
+        HyriAPI.get().getScheduler().schedule(() -> {
             for (DefaultTab tab : this.tabs.values()) {
                 tab.update();
             }
