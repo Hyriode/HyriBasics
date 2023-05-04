@@ -294,7 +294,7 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             final IHyriPlayerSession targetSession = IHyriPlayerSession.get(targetId);
 
             if (targetSession.getNickname().has() && !account.getRank().isStaff()) {
-                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_DOESNT_ACCEPT_MESSAGE.asString(account).replace("%player%", target.getNameWithRank()))));
+                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_DOESNT_ACCEPT_MESSAGE.asString(account).replace("%player%", targetSession.getNameWithRank()))));
                 return;
             }
 
@@ -333,7 +333,7 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
             final SettingsLevel level = target.getSettings().getPartyRequestsLevel();
 
             if ((level == SettingsLevel.NONE || (level == SettingsLevel.FRIENDS && !target.getFriends().has(playerId))) && !account.getRank().isStaff()) {
-                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_DOESNT_ACCEPT_MESSAGE.asString(account).replace("%player%", targetSession.getNameWithRank()))));
+                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_DOESNT_ACCEPT_MESSAGE.asString(account).replace("%player%", target.getNameWithRank()))));
                 return;
             }
 
@@ -344,7 +344,7 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
 
             this.partyManager.sendRequest(party.getId(), playerId, targetId);
 
-            player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_INVITATION_SENT_MESSAGE.asString(account).replace("%player%", targetSession.getNameWithRank()))));
+            player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_INVITATION_SENT_MESSAGE.asString(account).replace("%player%", target.getNameWithRank()))));
         };
     }
 
