@@ -82,7 +82,7 @@ public class RankCommand extends HyriCommand<HyriBasics> {
             final long days = output.get(Long.class);
             final IHyriPlus hyriPlus = target.getHyriPlus();
             final boolean expired = hyriPlus.hasExpire();
-            final long duration = days * 24 * 3600;
+            final long duration = days * 24 * 3600 * 1000;
 
             hyriPlus.setDuration(hyriPlus.getDuration() + duration);
 
