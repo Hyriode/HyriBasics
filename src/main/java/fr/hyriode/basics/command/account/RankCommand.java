@@ -91,6 +91,7 @@ public class RankCommand extends HyriCommand<HyriBasics> {
             }
 
             target.getTransactions().add(HyriPlusTransaction.TRANSACTIONS_TYPE, new HyriPlusTransaction(duration));
+            target.update();
 
             HyriAPI.get().getEventBus().publish(new RankUpdatedEvent(target.getUniqueId()));
 
