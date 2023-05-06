@@ -25,7 +25,7 @@ public class VanishCommand extends HyriCommand<HyriBasics> {
         super(plugin, new CommandInfo("vanish")
                 .withDescription("The command used to vanish yourself from other players")
                 .withUsage(new CommandUsage().withStringMessage(player -> "/vanish"))
-                .withPermission(player -> player.getRank().is(PlayerRank.PARTNER)));
+                .withPermission(player -> player.getHyriPlus().has()));
     }
 
     @Override

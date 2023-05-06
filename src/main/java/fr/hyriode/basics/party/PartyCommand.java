@@ -184,8 +184,8 @@ public class PartyCommand extends HyriCommand<HyriBasics> {
                 return;
             }
 
-            if (!account.getRank().isSuperior(PlayerRank.PARTNER)) {
-                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_RANK_FEATURE_MESSAGE.asString(account).replace("%rank%", PlayerRank.PARTNER.getDefaultPrefix()))));
+            if (!account.getHyriPlus().has()) {
+                player.spigot().sendMessage(createMessage(builder -> builder.append(BasicsMessage.PARTY_RANK_FEATURE_MESSAGE.asString(account).replace("%rank%", ChatColor.GOLD + "Hyri+"))));
                 return;
             }
 
