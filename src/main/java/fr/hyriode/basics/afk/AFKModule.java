@@ -18,7 +18,7 @@ import java.util.UUID;
  */
 public class AFKModule implements Listener {
 
-    public static final int MAX_THRESHOLD = 10; // (in minutes)
+    public static final int MAX_THRESHOLD = 20; // (in minutes)
 
     private final Map<UUID, AFKPlayer> players = new HashMap<>();
 

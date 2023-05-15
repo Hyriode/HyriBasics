@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class TabModule {
 
-    private final Map<UUID, DefaultTab> tabs = new HashMap<>();
+    private final Map<UUID, DefaultTab> tabs = new ConcurrentHashMap<>();
 
     public TabModule() {
         HyriAPI.get().getScheduler().schedule(() -> {

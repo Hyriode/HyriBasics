@@ -8,7 +8,7 @@
   "command.vanish.unset": "&8▪ &7Your &bvanish &7is now &cdisabled&7!",
   "command.vanish.game": "&cYou can't vanish yourself while playing a game!",
 
-  "command.discord.message": " &8▪ &7Discord: &b%discord%",
+  "command.discord.message": "&8▪ &7Discord: &b%discord%",
   "command.website.message": "&8▪ &7Website: &b%website%",
   "command.store.message": "&8▪ &7Store: &b%store%",
 

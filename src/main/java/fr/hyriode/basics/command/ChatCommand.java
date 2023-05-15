@@ -58,7 +58,11 @@ public class ChatCommand extends HyriCommand<HyriBasics> {
             try {
                 final HyriChatChannel channel = HyriChatChannel.valueOf(chat);
 
-                HyriAPI.get().getChatChannelManager().sendMessage(channel, playerId, output.get(1, String.class), false);
+                if (channel == HyriChatChannel.GLOBAL) {
+                    player.chat(output.get(1, String.class));
+                } else {
+                    HyriAPI.get().getChatChannelManager().sendMessage(channel, playerId, output.get(1, String.class), false);
+                }
             } catch (Exception e) {
                 player.sendMessage(BasicsMessage.COMMAND_CHAT_CHANNEL_INVALID.asString(player));
             }
