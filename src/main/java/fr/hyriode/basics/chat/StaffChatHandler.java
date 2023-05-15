@@ -24,9 +24,9 @@ public class StaffChatHandler implements IHyriChatHandler {
             event.setCancelled(true);
 
             HyriAPI.get().getChatChannelManager().sendMessage(HyriChatChannel.STAFF, playerId, message.substring(1), false);
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Override
