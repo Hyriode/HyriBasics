@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiFunction;
 
 /**
  * Project: Hyriode
@@ -26,6 +27,8 @@ import java.util.List;
  * on 20/05/2022 at 21:27
  */
 public abstract class DebugGUI extends PaginatedInventory {
+
+    public static final BiFunction<String, String, String> LORE_FORMATTER = (key, value) -> ChatColor.DARK_GRAY + Symbols.DOT_BOLD + ChatColor.GRAY + " " + key + ": " + ChatColor.AQUA + value;
 
     public static class Manager {
 
@@ -35,12 +38,15 @@ public abstract class DebugGUI extends PaginatedInventory {
 
         public Manager() {
             instance = this;
+
             this.categories = new ArrayList<>();
 
             this.registerCategory(new Category(BasicsHead.BIRD_HOUSE_CYAN, "Menu principal", Arrays.asList("Accéder au menu principal du", "système d'aide au développement", "et de contrôle."), 0, MainGUI.class));
-            this.registerCategory(new Category(BasicsHead.COIL_OF_WIRE, "Proxys", Arrays.asList("Accéder au menu de contrôle", "des proxies."), 3, ProxiesGUI.class));
-            this.registerCategory(new Category(BasicsHead.COMPUTER, "Limbos", Arrays.asList("Accéder au menu de contrôle", "des limbos."), 4, LimbosGUI.class));
-            this.registerCategory(new Category(BasicsHead.SERVER, "Serveurs", Arrays.asList("Accéder au menu de contrôle", "des serveurs."), 5, ServersGUI.class));
+            this.registerCategory(new Category(BasicsHead.COIL_OF_WIRE, "Proxys", Arrays.asList("Accéder au menu de contrôle", "des proxies."), 2, ProxiesGUI.class));
+            this.registerCategory(new Category(BasicsHead.COMPUTER, "Limbos", Arrays.asList("Accéder au menu de contrôle", "des limbos."), 3, LimbosGUI.class));
+            this.registerCategory(new Category(BasicsHead.SERVER, "Serveurs", Arrays.asList("Accéder au menu de contrôle", "des serveurs."), 4, ServersGUI.class));
+            this.registerCategory(new Category(BasicsHead.GAME, "Jeux", Arrays.asList("Accéder au menu de contrôle", "des jeux."), 6, ServersGUI.class));
+            this.registerCategory(new Category(BasicsHead.DICE, "Jeux rotatifs", Arrays.asList("Accéder au menu de contrôle", "des jeux rotatifs."), 7, ServersGUI.class));
         }
 
         public void registerCategory(Category category) {
@@ -113,7 +119,7 @@ public abstract class DebugGUI extends PaginatedInventory {
     protected final HyriBasics plugin;
 
     public DebugGUI(Player owner, String name, HyriBasics plugin) {
-        super(owner, ChatColor.DARK_AQUA + "Dev " + ChatColor.DARK_GRAY +  "┃ " + ChatColor.GRAY + name, 6 * 9);
+        super(owner, ChatColor.DARK_AQUA + "Debug " + ChatColor.DARK_GRAY +  "┃ " + ChatColor.GRAY + name, 6 * 9);
         this.plugin = plugin;
 
         this.setHorizontalLine(0, 8, new ItemBuilder(Material.STAINED_GLASS_PANE, 1, 9).withName(" ").build());
@@ -125,22 +131,6 @@ public abstract class DebugGUI extends PaginatedInventory {
                     .withLore(category.getLore())
                     .build(), event -> this.openSubGUI(category.getGuiClass()));
         }
-    }
-
-    protected void addPagesItems() {
-        if (!this.usingPages) {
-            return;
-        }
-
-        this.setItem(45, new ItemBuilder(Material.ARROW)
-                .withName(ChatColor.DARK_AQUA + "Page précédente " + ChatColor.DARK_GRAY + Symbols.LINE_VERTICAL_BOLD + ChatColor.GRAY + " " + (this.paginationManager.currentPage() + 1) + "/" + this.paginationManager.getPagination().totalPages())
-                .withLore(ChatColor.GRAY + "Passe à la page précédente")
-                .build(), event -> this.paginationManager.previousPage());
-
-        this.setItem(53, new ItemBuilder(Material.ARROW)
-                .withName(ChatColor.DARK_AQUA + "Page suivante " + ChatColor.DARK_GRAY + Symbols.LINE_VERTICAL_BOLD + ChatColor.GRAY + " " + (this.paginationManager.currentPage() + 1) + "/" + this.paginationManager.getPagination().totalPages())
-                .withLore(ChatColor.GRAY + "Passe à la page suivante")
-                .build(), event -> this.paginationManager.nextPage());
     }
 
     private void openSubGUI(Class<? extends DebugGUI> guiClass) {
@@ -160,7 +150,7 @@ public abstract class DebugGUI extends PaginatedInventory {
 
     @Override
     public void updatePagination(int page, List<PaginatedItem> items) {
-        this.addPagesItems();
+        this.addDefaultPagesItems(45, 53);
     }
 
 }
