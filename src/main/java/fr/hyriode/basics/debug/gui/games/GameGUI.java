@@ -7,6 +7,7 @@ import fr.hyriode.basics.debug.gui.DebugGUI;
 import fr.hyriode.basics.util.BasicsHead;
 import fr.hyriode.hyrame.anvilgui.AnvilGUI;
 import fr.hyriode.hyrame.inventory.pagination.PaginatedItem;
+import fr.hyriode.hyrame.inventory.pagination.PaginationArea;
 import fr.hyriode.hyrame.item.ItemBuilder;
 import fr.hyriode.hyrame.utils.Pagination;
 import org.bukkit.ChatColor;
@@ -28,6 +29,8 @@ public class GameGUI extends DebugGUI {
 
     public GameGUI(Player owner, IHyriGameInfo gameInfo) {
         super(owner, gameInfo.getDisplayName(), HyriBasics.get());
+        this.usingPages = true;
+        this.paginationManager.setArea(new PaginationArea(20, 33));
         this.gameInfo = gameInfo;
 
         this.setItem(49, ItemBuilder.asHead(BasicsHead.MONITOR_PLUS)
