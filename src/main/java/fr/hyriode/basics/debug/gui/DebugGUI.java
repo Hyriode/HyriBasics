@@ -1,6 +1,8 @@
 package fr.hyriode.basics.debug.gui;
 
 import fr.hyriode.basics.HyriBasics;
+import fr.hyriode.basics.debug.gui.games.GamesGUI;
+import fr.hyriode.basics.debug.gui.games.RotatingGamesGUI;
 import fr.hyriode.basics.debug.gui.limbo.LimbosGUI;
 import fr.hyriode.basics.debug.gui.proxy.ProxiesGUI;
 import fr.hyriode.basics.debug.gui.server.ServersGUI;
@@ -45,8 +47,8 @@ public abstract class DebugGUI extends PaginatedInventory {
             this.registerCategory(new Category(BasicsHead.COIL_OF_WIRE, "Proxys", Arrays.asList("Accéder au menu de contrôle", "des proxies."), 2, ProxiesGUI.class));
             this.registerCategory(new Category(BasicsHead.COMPUTER, "Limbos", Arrays.asList("Accéder au menu de contrôle", "des limbos."), 3, LimbosGUI.class));
             this.registerCategory(new Category(BasicsHead.SERVER, "Serveurs", Arrays.asList("Accéder au menu de contrôle", "des serveurs."), 4, ServersGUI.class));
-            this.registerCategory(new Category(BasicsHead.GAME, "Jeux", Arrays.asList("Accéder au menu de contrôle", "des jeux."), 6, ServersGUI.class));
-            this.registerCategory(new Category(BasicsHead.DICE, "Jeux rotatifs", Arrays.asList("Accéder au menu de contrôle", "des jeux rotatifs."), 7, ServersGUI.class));
+            this.registerCategory(new Category(BasicsHead.GAME, "Jeux", Arrays.asList("Accéder au menu de contrôle", "des jeux."), 6, GamesGUI.class));
+            this.registerCategory(new Category(BasicsHead.DICE, "Jeux rotatifs", Arrays.asList("Accéder au menu de contrôle", "des jeux rotatifs."), 7, RotatingGamesGUI.class));
         }
 
         public void registerCategory(Category category) {
