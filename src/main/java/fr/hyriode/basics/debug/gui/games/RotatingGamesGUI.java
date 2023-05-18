@@ -10,6 +10,7 @@ import fr.hyriode.basics.util.BasicsHead;
 import fr.hyriode.hyrame.IHyrame;
 import fr.hyriode.hyrame.anvilgui.AnvilGUI;
 import fr.hyriode.hyrame.inventory.pagination.PaginatedItem;
+import fr.hyriode.hyrame.inventory.pagination.PaginationArea;
 import fr.hyriode.hyrame.item.ItemBuilder;
 import fr.hyriode.hyrame.utils.Pagination;
 import org.bukkit.Bukkit;
@@ -28,6 +29,10 @@ public class RotatingGamesGUI extends DebugGUI {
 
     public RotatingGamesGUI(Player owner, HyriBasics plugin) {
         super(owner, "Jeux rotatifs", plugin);
+        this.usingPages = true;
+        this.paginationManager.setArea(new PaginationArea(20, 33));
+
+        this.newUpdate(5 * 20L);
 
         this.setItem(49, ItemBuilder.asHead(BasicsHead.MONITOR_PLUS)
                 .withName(ChatColor.AQUA + "Ajouter un jeu rotatif")
@@ -51,9 +56,9 @@ public class RotatingGamesGUI extends DebugGUI {
                 }).open());
 
         this.setItem(51, ItemBuilder.asHead(BasicsHead.RED_BUTTON)
-                        .withName(ChatColor.AQUA + "Forcer la rotation")
-                        .withLore(ChatColor.GRAY + "Force la rotation vers le prochain", ChatColor.GRAY + "jeu rotatif.", "", ChatColor.RED + "Clic-gauche pour forcer")
-                        .build(),
+                .withName(ChatColor.AQUA + "Forcer la rotation")
+                .withLore(ChatColor.GRAY + "Force la rotation vers le prochain", ChatColor.GRAY + "jeu rotatif.", "", ChatColor.RED + "Clic-gauche pour forcer")
+                .build(),
                 event -> {
                     HyriAPI.get().getGameManager().getRotatingGameManager().switchToNextRotatingGame();
 

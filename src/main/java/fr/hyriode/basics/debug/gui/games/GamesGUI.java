@@ -23,7 +23,7 @@ public class GamesGUI extends DebugGUI {
     public GamesGUI(Player owner,HyriBasics plugin) {
         super(owner, "Jeux", plugin);
         this.usingPages = true;
-        this.paginationManager.setArea(new PaginationArea(9, 44));
+        this.paginationManager.setArea(new PaginationArea(20, 33));
 
         this.newUpdate(5 * 20L);
 

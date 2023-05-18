@@ -27,13 +27,13 @@ public class GameGUI extends DebugGUI {
     private final IHyriGameInfo gameInfo;
 
     public GameGUI(Player owner, IHyriGameInfo gameInfo) {
-        super(owner, gameInfo.getName(), HyriBasics.get());
+        super(owner, gameInfo.getDisplayName(), HyriBasics.get());
         this.gameInfo = gameInfo;
 
         this.setItem(49, ItemBuilder.asHead(BasicsHead.MONITOR_PLUS)
-                        .withName(ChatColor.AQUA + "Ajouter un type")
-                        .withLore(ChatColor.GRAY + "Ajoute un type disponible pour ce", ChatColor.GRAY + "jeu.", "", ChatColor.DARK_AQUA + "Cliquer pour ajouter")
-                        .build(),
+                .withName(ChatColor.AQUA + "Ajouter un type")
+                .withLore(ChatColor.GRAY + "Ajoute un type disponible pour ce", ChatColor.GRAY + "jeu.", "", ChatColor.DARK_AQUA + "Cliquer pour ajouter")
+                .build(),
                 event -> new AnvilGUI(this.plugin, this.owner, "Nom du type", null, false, player -> this.open(), null, null, (player, typeName) -> {
                     new AnvilGUI(this.plugin, this.owner, "Nom (affiché) du type", null, false, p -> this.open(), null, null, (p, typeDisplay) -> {
                         int higherId = -1;
