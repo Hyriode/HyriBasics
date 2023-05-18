@@ -26,8 +26,8 @@ import java.util.List;
  */
 public class RotatingGamesGUI extends DebugGUI {
 
-    public RotatingGamesGUI(Player owner) {
-        super(owner, "Jeux rotatifs", HyriBasics.get());
+    public RotatingGamesGUI(Player owner, HyriBasics plugin) {
+        super(owner, "Jeux rotatifs", plugin);
 
         this.setItem(49, ItemBuilder.asHead(BasicsHead.MONITOR_PLUS)
                 .withName(ChatColor.AQUA + "Ajouter un jeu rotatif")
@@ -45,7 +45,7 @@ public class RotatingGamesGUI extends DebugGUI {
 
                     rotatingGameManager.addRotatingGame(rotatingGameManager.getRotatingGames().size(), gameName);
 
-                    new RotatingGamesGUI(this.owner).open();
+                    new RotatingGamesGUI(this.owner, this.plugin).open();
 
                     return null;
                 }).open());
