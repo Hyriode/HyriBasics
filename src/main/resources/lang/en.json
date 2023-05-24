@@ -68,7 +68,7 @@
   "friend.already.message": "%player% &cis already your friend!",
   "friend.not-already.message": "&cYou are not friend with %player%&c!",
   "friend.doesnt-accept.message": "%player% &cdoesn't accept friends requests!",
-  "friend.request-sent.message": "&fA request has been sent to %player%&f. The friend request\nwill expire in &b60 &fseconds.",
+  "friend.request-sent.message": "&fA request has been sent to %player%&f. The friend request will expire in &b60 &fseconds.",
   "friend.request-received.message": "%player% &fwants to be your friend.",
   "friend.request-already.message": "&cYou already sent a friend request to %player%!",
   "friend.no-request.message": "&cYou don't have a friend request from %player%!",

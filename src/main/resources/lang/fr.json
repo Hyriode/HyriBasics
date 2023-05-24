@@ -68,7 +68,7 @@
   "friend.already.message": "&cVous êtes déjà ami avec %player%&c!",
   "friend.not-already.message": "&cVous n'êtes pas ami avec %player%&c!",
   "friend.doesnt-accept.message": "%player% &cn'accepte pas les demandes d'amis!",
-  "friend.request-sent.message": "&fUne demande d'ami a été envoyée à %player%&f. &fLa requête\n&fexpirera dans &d60 &fsecondes.",
+  "friend.request-sent.message": "&fUne demande d'ami a été envoyée à %player%&f. &fLa requête expirera dans &d60 &fsecondes.",
   "friend.request-received.message": "%player% &fveut être votre ami.",
   "friend.request-already.message": "&cVous avez déjà envoyé une demande d'ami à %player%!",
   "friend.no-request.message": "&cVous n'avez pas de demande d'ami de %player%&c!",

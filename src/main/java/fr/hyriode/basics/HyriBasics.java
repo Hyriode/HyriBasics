@@ -7,7 +7,7 @@ import fr.hyriode.basics.afk.AFKModule;
 import fr.hyriode.basics.announcement.AnnouncementListener;
 import fr.hyriode.basics.booster.BoosterModule;
 import fr.hyriode.basics.chat.DefaultChatHandler;
-import fr.hyriode.basics.chat.StaffChatHandler;
+import fr.hyriode.basics.chat.ChannelPrefixHandler;
 import fr.hyriode.basics.chat.channel.GlobalChannelHandler;
 import fr.hyriode.basics.chat.channel.PartnerChannelHandler;
 import fr.hyriode.basics.chat.channel.PartyChannelHandler;
@@ -19,7 +19,6 @@ import fr.hyriode.basics.message.PrivateMessageModule;
 import fr.hyriode.basics.nickname.NicknameModule;
 import fr.hyriode.basics.party.PartyModule;
 import fr.hyriode.basics.tab.TabModule;
-import fr.hyriode.hyggdrasil.api.server.HyggServer;
 import fr.hyriode.hyrame.HyrameLoader;
 import fr.hyriode.hyrame.IHyrame;
 import fr.hyriode.hyrame.plugin.IPluginProvider;
@@ -84,7 +83,7 @@ public class HyriBasics extends JavaPlugin implements IPluginProvider {
 
         // Register default chat handler
         this.hyrame.getChatManager().registerHandler(100, new DefaultChatHandler());
-        this.hyrame.getChatManager().registerHandler(10, new StaffChatHandler());
+        this.hyrame.getChatManager().registerHandler(9, new ChannelPrefixHandler());
 
         // Register chat channels
         final BiConsumer<HyriChatChannel, IHyriChatChannelHandler> channelRegistry = (channel, handler) -> HyriAPI.get().getChatChannelManager().registerHandler(channel, handler);

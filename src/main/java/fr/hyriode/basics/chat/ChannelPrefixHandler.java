@@ -12,7 +12,7 @@ import java.util.UUID;
  * Created by AstFaster
  * on 15/05/2023 at 20:05
  */
-public class StaffChatHandler implements IHyriChatHandler {
+public class ChannelPrefixHandler implements IHyriChatHandler {
 
     @Override
     public boolean onChat(AsyncPlayerChatEvent event) {
