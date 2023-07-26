@@ -7,7 +7,7 @@ The license text is available [here](LICENCE.md) if you want more details.
 
 ## Description
 
-HyriBasics a plugin present on each server, which adds the main modules of the network such as friends, parties, commands, etc.
+HyriBasics is a plugin present on each server, which adds the main modules of the network such as friends, parties, commands, etc.
 
 - Type: Plugin
 - Developer(s) : AstFaster
